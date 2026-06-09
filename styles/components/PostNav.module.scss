@@ -1,0 +1,45 @@
+@use '../variables' as *;
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  gap: $spacing-md;
+  max-width: 800px;
+  margin: $spacing-lg auto 0;
+  padding: $spacing-md $spacing-lg;
+  background: var(--color-surface);
+  border-radius: $radius-md;
+  border: 1px solid var(--color-border);
+  box-shadow: $shadow-soft;
+}
+
+.prev, .next {
+  flex: 1;
+  max-width: 45%;
+}
+
+.next {
+  text-align: right;
+  margin-left: auto;
+}
+
+.label {
+  display: block;
+  font-size: $font-size-sm;
+  color: var(--color-text-secondary);
+  margin-bottom: 3px;
+  font-family: var(--font-heading);
+}
+
+.linkTitle {
+  font-size: $font-size-base;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}

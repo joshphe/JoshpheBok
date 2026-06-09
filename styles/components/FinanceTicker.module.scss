@@ -1,0 +1,90 @@
+@use '../variables' as *;
+
+.strip {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 998;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.track {
+  overflow: hidden;
+}
+
+.run {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+  width: max-content;
+  padding: 13px 0;
+  animation: scroll 30s linear infinite;
+
+  .strip:hover & {
+    animation-play-state: paused;
+  }
+
+  &[data-loading] {
+    animation: none;
+  }
+}
+
+// ── Item ──
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.symbol {
+  font-weight: 700;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.price {
+  font-weight: 600;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.change {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+  &.up   { color: #4A7C59; }
+  &.down { color: #C17F59; }
+}
+
+// ── Placeholder ──
+
+.placeholder {
+  color: var(--color-text-secondary);
+  font-size: $font-size-sm;
+  font-style: italic;
+  padding: 0 $spacing-md;
+}
+
+// ── Animation ──
+
+@keyframes scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

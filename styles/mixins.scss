@@ -1,0 +1,68 @@
+// ── Biophilic Mixins ──
+@use 'variables' as *;
+
+@mixin respond-sm {
+  @media (min-width: $bp-sm) { @content; }
+}
+@mixin respond-md {
+  @media (min-width: $bp-md) { @content; }
+}
+@mixin respond-lg {
+  @media (min-width: $bp-lg) { @content; }
+}
+@mixin respond-xl {
+  @media (min-width: $bp-xl) { @content; }
+}
+
+@mixin container {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+  @include respond-md { padding: 0 $spacing-lg; }
+}
+
+// Organic card with natural paper texture
+@mixin card-organic {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-md;
+  box-shadow: $shadow-soft;
+  transition: all $transition-natural;
+  position: relative;
+  overflow: hidden;
+
+  // Subtle grain texture
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.015;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    border-radius: inherit;
+  }
+
+  &:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: $shadow-hover;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin text-truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

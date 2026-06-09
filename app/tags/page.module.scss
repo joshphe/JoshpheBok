@@ -1,0 +1,141 @@
+@use '../../styles/variables' as *;
+
+// ── Header ──
+.header {
+  text-align: center;
+  margin-bottom: $spacing-2xl;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: $spacing-sm;
+  letter-spacing: 0.03em;
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  font-size: $font-size-lg;
+
+  strong {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+}
+
+// ── Article List ──
+.list {
+  max-width: 740px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md $spacing-lg;
+  border-radius: $radius-md;
+  border: 1px solid transparent;
+  transition: all $transition-gentle;
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    box-shadow: $shadow-soft;
+    transform: translateX(4px);
+
+    .arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .link {
+      color: var(--color-primary);
+    }
+  }
+}
+
+// ── Index number ──
+.index {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: $radius-xs;
+}
+
+// ── Body ──
+.body {
+  flex: 1;
+  min-width: 0;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: 3px;
+}
+
+.link {
+  font-size: $font-size-lg;
+  font-weight: 600;
+  color: var(--color-text);
+  transition: color $transition-gentle;
+  line-height: 1.4;
+}
+
+.category {
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  padding: 2px 8px;
+  border: 1px solid var(--color-primary-light);
+  border-radius: $radius-xl;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  font-size: $font-size-sm;
+  color: var(--color-text-secondary);
+
+  time { white-space: nowrap; }
+}
+
+.excerpt {
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ── Arrow indicator ──
+.arrow {
+  flex-shrink: 0;
+  color: var(--color-primary-light);
+  font-size: 1rem;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all $transition-gentle;
+}

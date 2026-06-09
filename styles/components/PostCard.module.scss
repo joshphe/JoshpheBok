@@ -1,0 +1,119 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+// Card inner — BorderGlow handles border/shadow/glow
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 14px; // match BorderGlow's borderRadius
+  background: var(--color-surface);
+}
+
+.image {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 14px 14px 0 0; // round top corners only
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $transition-flourish;
+    filter: brightness(0.95);
+  }
+
+  &:hover img {
+    transform: scale(1.06);
+    filter: brightness(1.05);
+  }
+}
+
+.placeholder {
+  @include flex-center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(160deg, var(--color-primary-dark), var(--color-primary-light));
+
+  span {
+    font-size: 3.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 700;
+    font-family: var(--font-heading);
+  }
+}
+
+.titleOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: $spacing-xl $spacing-md $spacing-md;
+  background: linear-gradient(transparent, rgba(29, 35, 25, 0.85));
+  color: #FDFCF8;
+  font-family: var(--font-heading);
+  font-size: $font-size-lg;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.body {
+  padding: $spacing-md;
+  flex: 1;
+}
+
+.summary {
+  color: var(--color-text-secondary);
+  font-size: $font-size-sm;
+  line-height: 1.7;
+  @include text-truncate(2);
+  margin-bottom: $spacing-sm;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: $font-size-sm;
+  color: var(--color-text-secondary);
+}
+
+.category {
+  color: var(--color-primary);
+  font-size: $font-size-sm;
+  font-weight: 600;
+  padding: 2px 10px;
+  border: 1px solid var(--color-primary-light);
+  border-radius: $radius-xs;
+  transition: all $transition-gentle;
+
+  &:hover {
+    background: var(--color-primary);
+    color: #fff;
+  }
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+  padding: 0 $spacing-md $spacing-md;
+}
+
+.tag {
+  display: inline-block;
+  padding: 3px 12px;
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  border-radius: $radius-xl;
+  font-size: 0.75rem;
+  transition: all $transition-gentle;
+  border: 1px solid transparent;
+
+  &:hover {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+  }
+}

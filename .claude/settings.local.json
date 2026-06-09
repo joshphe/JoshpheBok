@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xxd)",
+      "Bash(iconv -f GB2312 -t UTF-8 \"/Users/0xjasper/Documents/IDE/SaveMoney/支付宝交易明细\\(20250601-20260527\\).csv\")",
+      "Read(//tmp/**)",
+      "Bash(iconv -f GBK -t UTF-8 \"/Users/0xjasper/Documents/IDE/SaveMoney/支付宝交易明细\\(20250601-20260527\\).csv\")",
+      "Read(//private/tmp/**)",
+      "Bash(npm uninstall *)",
+      "Bash(npm run *)",
+      "Bash(npm audit *)",
+      "Bash(gh auth *)"
+    ]
+  }
+}

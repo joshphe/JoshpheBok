@@ -1,0 +1,57 @@
+@use '../variables' as *;
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-md;
+  padding: $spacing-xl 0;
+}
+
+.arrow {
+  color: var(--color-primary);
+  font-size: $font-size-base;
+  font-weight: 500;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-sm;
+  transition: all $transition-gentle;
+
+  &:hover {
+    background: var(--color-bg);
+  }
+}
+
+.arrowDisabled {
+  color: var(--color-border);
+  font-size: $font-size-base;
+}
+
+.nums {
+  display: flex;
+  gap: 4px;
+}
+
+.num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-full;
+  font-size: $font-size-base;
+  color: var(--color-text-secondary);
+  border: 1px solid transparent;
+  transition: all $transition-gentle;
+
+  &:hover {
+    border-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  &.active {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+    font-weight: 600;
+  }
+}
