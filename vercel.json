@@ -2,10 +2,5 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "out",
-  "installCommand": "npm install",
-  "framework": "nextjs",
-  "rewrites": [
-    { "source": "/feed.xml", "destination": "/feed.xml" },
-    { "source": "/sitemap.xml", "destination": "/sitemap.xml" }
-  ]
+  "installCommand": "npm install"
 }
