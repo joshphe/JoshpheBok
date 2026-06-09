@@ -27,18 +27,36 @@ function fmtChange(c: number | null): string {
   return `${c > 0 ? '+' : ''}${c.toFixed(2)}%`;
 }
 
-// ── Direct fetch — no custom hook ──
+// ── Direct fetch with timeouts ──
+
+const FETCH_TIMEOUT = 8000; // 8s per request
+
+async function fetchWithTimeout(url: string): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+  try {
+    return await fetch(url, { signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 async function fetchCrypto(): Promise<TickerItem[]> {
-  const res = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=%5B%22BTCUSDT%22%2C%22ETHUSDT%22%2C%22BNBUSDT%22%5D');
-  const data = await res.json();
-  const names: Record<string, string> = { BTCUSDT: 'BTC', ETHUSDT: 'ETH', BNBUSDT: 'BNB' };
-  return data.map((t: { symbol: string; lastPrice: string; priceChangePercent: string }) => ({
-    symbol: names[t.symbol] ?? t.symbol,
-    name: names[t.symbol] ?? t.symbol,
-    price: parseFloat(t.lastPrice),
-    changePercent: parseFloat(t.priceChangePercent),
-  }));
+  try {
+    const res = await fetchWithTimeout('https://api.binance.com/api/v3/ticker/24hr?symbols=%5B%22BTCUSDT%22%2C%22ETHUSDT%22%2C%22BNBUSDT%22%5D');
+    if (!res.ok) throw new Error(`Binance ${res.status}`);
+    const data = await res.json();
+    const names: Record<string, string> = { BTCUSDT: 'BTC', ETHUSDT: 'ETH', BNBUSDT: 'BNB' };
+    return data.map((t: { symbol: string; lastPrice: string; priceChangePercent: string }) => ({
+      symbol: names[t.symbol] ?? t.symbol,
+      name: names[t.symbol] ?? t.symbol,
+      price: parseFloat(t.lastPrice),
+      changePercent: parseFloat(t.priceChangePercent),
+    }));
+  } catch (err) {
+    console.warn('[FinanceTicker] Crypto fetch failed:', err instanceof Error ? err.message : err);
+    return [];
+  }
 }
 
 async function fetchStocks(): Promise<TickerItem[]> {
@@ -49,17 +67,27 @@ async function fetchStocks(): Promise<TickerItem[]> {
   ];
   const results: TickerItem[] = [];
   for (const s of symbols) {
-    const res = await fetch(`https://push2.eastmoney.com/api/qt/stock/get?secid=${s.secid}&fields=f43,f57,f170`);
-    if (!res.ok) continue;
-    const json = await res.json();
-    const d = json?.data;
-    if (!d || d.f43 == null) continue;
-    results.push({
-      symbol: s.sym,
-      name: s.name,
-      price: d.f43 / 1000,
-      changePercent: d.f170 != null ? d.f170 / 100 : null,
-    });
+    try {
+      const res = await fetchWithTimeout(`https://push2.eastmoney.com/api/qt/stock/get?secid=${s.secid}&fields=f43,f57,f170`);
+      if (!res.ok) {
+        console.warn(`[FinanceTicker] ${s.sym} HTTP ${res.status}`);
+        continue;
+      }
+      const json = await res.json();
+      const d = json?.data;
+      if (!d || d.f43 == null) {
+        console.warn(`[FinanceTicker] ${s.sym} missing data`);
+        continue;
+      }
+      results.push({
+        symbol: s.sym,
+        name: s.name,
+        price: d.f43 / 1000,
+        changePercent: d.f170 != null ? d.f170 / 100 : null,
+      });
+    } catch (err) {
+      console.warn(`[FinanceTicker] ${s.sym} fetch failed:`, err instanceof Error ? err.message : err);
+    }
   }
   return results;
 }
@@ -75,16 +103,14 @@ export default function FinanceTicker() {
     async function fetchAll() {
       const localCancelled = (): boolean => cancelled;
       console.log('[FinanceTicker] fetching...');
-      try {
-        const [crypto, stocks] = await Promise.all([fetchCrypto(), fetchStocks()]);
-        if (localCancelled()) return;
-        const all = [...crypto, ...stocks];
-        console.log('[FinanceTicker] got data:', all.length, 'items');
-        setItems(all);
-      } catch (err) {
-        if (localCancelled()) return;
-        console.error('[FinanceTicker] fetch error:', err);
+      const settled = await Promise.allSettled([fetchCrypto(), fetchStocks()]);
+      if (localCancelled()) return;
+      let all: TickerItem[] = [];
+      for (const r of settled) {
+        if (r.status === 'fulfilled') all = all.concat(r.value);
       }
+      console.log('[FinanceTicker] got data:', all.length, 'items (crypto:', settled[0].status, 'stocks:', settled[1].status, ')');
+      if (all.length > 0) setItems(all);
     }
 
     // Initial fetch

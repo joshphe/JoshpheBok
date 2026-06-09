@@ -5,12 +5,14 @@ import styles from '@/styles/components/ThemeToggle.module.scss';
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('theme') as 'light' | 'dark' | null;
     const preferred = saved ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     setTheme(preferred);
     document.documentElement.setAttribute('data-theme', preferred);
+    setMounted(true);
   }, []);
 
   const toggle = () => {
@@ -22,7 +24,7 @@ export default function ThemeToggle() {
 
   return (
     <button className={styles.toggle} onClick={toggle} aria-label="切换主题">
-      {theme === 'light' ? '🌙' : '☀️'}
+      {mounted ? (theme === 'light' ? '🌙' : '☀️') : '🌙'}
     </button>
   );
 }
