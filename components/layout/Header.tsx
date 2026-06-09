@@ -4,10 +4,17 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { NAV, SITE } from '@/lib/constants';
 import ThemeToggle from '@/components/ui/ThemeToggle';
+import { useRole } from '@/hooks/useRole';
 import styles from '@/styles/components/Header.module.scss';
+
+// Routes restricted to blogger only
+const RESTRICTED = new Set(['/archives']);
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const role = useRole();
+
+  const visibleNav = role === 'blogger' ? NAV : NAV.filter((item) => !RESTRICTED.has(item.href));
 
   return (
     <header className={styles.header}>
@@ -17,7 +24,7 @@ export default function Header() {
         </Link>
 
         <nav className={styles.desktopNav}>
-          {NAV.map((item) => (
+          {visibleNav.map((item) => (
             <Link key={item.href} href={item.href} className={styles.navLink}>
               {item.label}
             </Link>
@@ -38,7 +45,7 @@ export default function Header() {
 
       {/* Mobile nav overlay */}
       <div className={`${styles.mobileNav} ${mobileOpen ? styles.mobileOpen : ''}`}>
-        {NAV.map((item) => (
+        {visibleNav.map((item) => (
           <Link
             key={item.href}
             href={item.href}

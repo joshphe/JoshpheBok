@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import { SITE } from '@/lib/constants';
+import AuthGuard from '@/components/auth/AuthGuard';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/ui/BackToTop';
@@ -49,12 +50,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <BackToTop />
-        <SpeedInsights />
-        <Analytics />
+        <AuthGuard>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <BackToTop />
+          <SpeedInsights />
+          <Analytics />
+        </AuthGuard>
       </body>
     </html>
   );
