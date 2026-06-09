@@ -9,7 +9,9 @@
       "Bash(npm uninstall *)",
       "Bash(npm run *)",
       "Bash(npm audit *)",
-      "Bash(gh auth *)"
+      "Bash(gh auth *)",
+      "Bash(npx vercel *)",
+      "Bash(npm install *)"
     ]
   }
 }
