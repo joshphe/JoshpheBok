@@ -11,7 +11,8 @@
       "Bash(npm audit *)",
       "Bash(gh auth *)",
       "Bash(npx vercel *)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(pkill -f \"next dev\")"
     ]
   }
 }
