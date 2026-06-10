@@ -33,7 +33,10 @@
       "Bash(curl -s -o /dev/null -w \"Posts: %{http_code}\\\\n\" http://localhost:3000/posts)",
       "Bash(curl -s -o /dev/null -w \"Home: %{http_code}\\\\n\" http://localhost:3000)",
       "Bash(lsof -ti:3000 -ti:3001)",
-      "Bash(xargs kill)"
+      "Bash(xargs kill)",
+      "WebFetch(domain:mobbin.com)",
+      "WebSearch",
+      "WebFetch(domain:www.mobbin.com)"
     ]
   }
 }

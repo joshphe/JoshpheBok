@@ -5,7 +5,7 @@ import { SITE } from '@/lib/constants';
 import AuthGuard from '@/components/auth/AuthGuard';
 import BubbleMenu from '@/components/layout/BubbleMenu';
 import ThemeToggle from '@/components/ui/ThemeToggle';
-import Footer from '@/components/layout/Footer';
+import SlidingFooter from '@/components/layout/SlidingFooter';
 import BackToTop from '@/components/ui/BackToTop';
 import '@/styles/globals.scss';
 
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
+    <html lang="zh-CN" data-theme="dark" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -60,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ThemeToggle variant="subtle" />
           </div>
           <main>{children}</main>
-          <Footer />
+          <SlidingFooter />
           <BackToTop />
           <SpeedInsights />
           <Analytics />

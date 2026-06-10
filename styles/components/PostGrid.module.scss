@@ -1,5 +1,39 @@
 @use '../variables' as *;
 
+// ── Full-viewport home posts section (matches hero proportion) ──
+.homePosts {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: $spacing-xl 0;
+  background: var(--color-bg);
+
+  @media (min-width: $bp-md) {
+    min-height: 75vh;
+  }
+
+  @media (min-width: $bp-lg) {
+    height: 100vh;
+  }
+}
+
+.homeHeading {
+  font-family: var(--font-heading);
+  font-size: $font-size-xl;
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: center;
+  margin-bottom: $spacing-lg;
+  letter-spacing: 0.04em;
+
+  @media (min-width: $bp-md) {
+    font-size: $font-size-2xl;
+    margin-bottom: $spacing-xl;
+  }
+}
+
+// ── Grid ──
 .grid {
   display: grid;
   grid-template-columns: 1fr;

@@ -1,0 +1,72 @@
+@use '../variables' as *;
+
+// ── Shared inner layout (matches existing Footer) ──
+.inner {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 1.5rem $spacing-md;
+  text-align: center;
+
+  @media (min-width: $bp-md) {
+    padding: 1.5rem $spacing-lg;
+  }
+}
+
+// ── Static variant (inner pages) ──
+.static {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  margin-top: 2.5rem;
+}
+
+// ── Sliding variant (homepage) ──
+.sliding {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(100%);
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  &.visible {
+    transform: translateY(0);
+  }
+}
+
+// ── Social link ──
+.social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.375rem;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-text-secondary);
+    font-size: $font-size-base;
+    transition: color $transition-gentle;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+// ── Copyright ──
+.copy {
+  color: var(--color-text-secondary);
+  font-size: $font-size-sm;
+  opacity: 0.8;
+}

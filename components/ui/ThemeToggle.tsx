@@ -8,12 +8,12 @@ interface Props {
 }
 
 export default function ThemeToggle({ variant = 'default' }: Props) {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('theme') as 'light' | 'dark' | null;
-    const preferred = saved ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const preferred = saved ?? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
     setTheme(preferred);
     document.documentElement.setAttribute('data-theme', preferred);
     setMounted(true);
@@ -32,7 +32,7 @@ export default function ThemeToggle({ variant = 'default' }: Props) {
       onClick={toggle}
       aria-label="切换主题"
     >
-      {mounted ? (theme === 'light' ? '🌝' : '🌞') : '🌝'}
+      {mounted ? (theme === 'light' ? '🌝' : '🌞') : '🌞'}
     </button>
   );
 }

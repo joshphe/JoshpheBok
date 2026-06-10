@@ -1,0 +1,89 @@
+@use '../variables' as *;
+
+.card {
+  background: var(--color-surface);
+  border-radius: $radius-md;
+  border: 1px solid var(--color-border);
+  padding: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  transition: box-shadow $transition-gentle, border-color $transition-gentle;
+
+  &:hover {
+    box-shadow: $shadow-card;
+    border-color: var(--color-primary-light);
+  }
+}
+
+// ── Header ──
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: $spacing-sm;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: $font-size-lg;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.subtitle {
+  font-size: $font-size-sm;
+  color: var(--color-text-secondary);
+}
+
+// ── Body ──
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+// ── Row ──
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+
+  & + & {
+    border-top: 1px solid rgba(128, 128, 128, 0.12);
+  }
+}
+
+.name {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  min-width: 80px;
+}
+
+.price {
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+  text-align: right;
+  flex: 1;
+  padding: 0 $spacing-sm;
+}
+
+.change {
+  font-weight: 500;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  min-width: 120px;
+  color: var(--color-text-secondary);
+
+  &.up   { color: #D4A76A; }  // warm gold for up (Chinese convention: red for up, but using site's gold)
+  &.down { color: #8FBC8F; }  // green for down
+}

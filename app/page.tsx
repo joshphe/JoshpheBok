@@ -4,9 +4,10 @@ import { SITE } from '@/lib/constants';
 import { getPosts } from '@/lib/posts';
 import { shuffleArray } from '@/lib/utils';
 import BannerCover from '@/components/widgets/BannerCover';
-import DreamQuote from '@/components/widgets/DreamQuote';
 import FinanceTicker from '@/components/widgets/FinanceTicker';
+import WealthSection from '@/components/widgets/WealthSection';
 import PostGrid from '@/components/post/PostGrid';
+import styles from '@/styles/components/PostGrid.module.scss';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -36,9 +37,10 @@ export default async function HomePage() {
           <FinanceTicker />
         </div>
       </div>
-      <DreamQuote />
-      <section className="section">
+      <WealthSection />
+      <section className={styles.homePosts}>
         <div className="container">
+          <h2 className={styles.homeHeading}>推荐阅读</h2>
           <PostGrid posts={picks} />
         </div>
       </section>
