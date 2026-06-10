@@ -6,24 +6,23 @@ const AUTH_KEY = 'mybok_auth';
 
 export type Role = 'guest' | 'blogger' | 'loading';
 
-let _cached: Role = 'loading';
-
-export function getRole(): Role {
-  if (_cached !== 'loading') return _cached;
+function readRole(): Role {
   if (typeof window === 'undefined') return 'loading';
   const saved = sessionStorage.getItem(AUTH_KEY);
-  _cached = saved === 'blogger' ? 'blogger' : saved === 'guest' ? 'guest' : 'loading';
-  return _cached;
+  if (saved === 'blogger') return 'blogger';
+  if (saved === 'guest') return 'guest';
+  return 'loading';
+}
+
+export function getRole(): Role {
+  return readRole();
 }
 
 export function useRole(): Role {
-  const [role, setRole] = useState<Role>(getRole);
+  const [role, setRole] = useState<Role>(readRole);
 
   useEffect(() => {
-    const saved = sessionStorage.getItem(AUTH_KEY);
-    const r: Role = saved === 'blogger' ? 'blogger' : saved === 'guest' ? 'guest' : 'loading';
-    setRole(r);
-    _cached = r;
+    setRole(readRole());
   }, []);
 
   return role;

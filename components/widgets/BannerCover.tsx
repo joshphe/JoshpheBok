@@ -2,11 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { SITE } from '@/lib/constants';
+import { pickRandom } from '@/lib/utils';
 import styles from '@/styles/components/BannerCover.module.scss';
-
-function pickRandom(images: string[]): string {
-  return images[Math.floor(Math.random() * images.length)];
-}
 
 export default function BannerCover({ images }: { images: string[] }) {
   const [bg, setBg] = useState<string | null>(null);

@@ -14,8 +14,10 @@ export const metadata: Metadata = {
     template: `%s | ${SITE.title}`,
   },
   description: SITE.description,
+  keywords: [...SITE.keywords],
   metadataBase: new URL(SITE.url),
   alternates: {
+    canonical: '/',
     types: {
       'application/rss+xml': '/feed.xml',
     },
@@ -27,6 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: SITE.title,
     description: SITE.description,
+    url: SITE.url,
     type: 'website',
     locale: SITE.locale,
   },

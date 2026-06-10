@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getPost, getAllSlugs } from '@/lib/posts';
+import { SITE } from '@/lib/constants';
 import PostDetail from '@/components/post/PostDetail';
 import PostTOC from '@/components/post/PostTOC';
 import PostNav from '@/components/post/PostNav';
@@ -22,6 +23,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.title,
     description: post.summary ?? post.title,
+    keywords: post.tags,
+    alternates: {
+      canonical: `/posts/${post.slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.summary ?? post.title,
+      url: `${SITE.url}/posts/${post.slug}`,
+      type: 'article',
+      publishedTime: post.date,
+      modifiedTime: post.updated,
+      tags: post.tags,
+    },
   };
 }
 

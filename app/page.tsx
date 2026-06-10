@@ -1,11 +1,12 @@
 import { readdirSync } from 'fs';
 import { join } from 'path';
 import { SITE } from '@/lib/constants';
+import { getPosts } from '@/lib/posts';
+import { shuffleArray } from '@/lib/utils';
 import BannerCover from '@/components/widgets/BannerCover';
 import DreamQuote from '@/components/widgets/DreamQuote';
 import FinanceTicker from '@/components/widgets/FinanceTicker';
 import PostGrid from '@/components/post/PostGrid';
-import { getPosts } from '@/lib/posts';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -22,9 +23,8 @@ function getBgImages(): string[] {
 export default async function HomePage() {
   const allPosts = await getPosts();
 
-  // Pick 3 random posts at build time
-  const shuffled = [...allPosts].sort(() => Math.random() - 0.5);
-  const picks = shuffled.slice(0, 3);
+  // Pick 3 random posts at build time (Fisher-Yates)
+  const picks = shuffleArray(allPosts).slice(0, 3);
 
   const bgImages = getBgImages();
 

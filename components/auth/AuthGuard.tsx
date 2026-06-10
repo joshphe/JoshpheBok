@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { SITE } from '@/lib/constants';
+import { pickRandom } from '@/lib/utils';
 import styles from '@/styles/components/AuthGuard.module.scss';
 
 // SHA-256 hash of the token — no plaintext in source
@@ -15,10 +16,6 @@ const BG_IMAGES = [
 ];
 
 const AUTH_KEY = 'mybok_auth';
-
-function pickRandom(arr: string[]): string {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
 
 async function sha256(input: string): Promise<string> {
   const data = new TextEncoder().encode(input);

@@ -101,10 +101,9 @@ export default function FinanceTicker() {
     let cancelled = false;
 
     async function fetchAll() {
-      const localCancelled = (): boolean => cancelled;
       console.log('[FinanceTicker] fetching...');
       const settled = await Promise.allSettled([fetchCrypto(), fetchStocks()]);
-      if (localCancelled()) return;
+      if (cancelled) return;
       let all: TickerItem[] = [];
       for (const r of settled) {
         if (r.status === 'fulfilled') all = all.concat(r.value);

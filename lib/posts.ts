@@ -78,6 +78,7 @@ async function processPost(filepath: string): Promise<Post> {
 
 // Cache for build-time processing
 let _postsCache: Post[] | null = null;
+let _postsBySlug: Map<string, Post> | null = null;
 
 async function loadAllPosts(): Promise<Post[]> {
   if (_postsCache) return _postsCache;
@@ -90,6 +91,7 @@ async function loadAllPosts(): Promise<Post[]> {
   // Sort by date descending
   posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   _postsCache = posts;
+  _postsBySlug = new Map(posts.map((p) => [p.slug, p]));
   return posts;
 }
 
@@ -100,8 +102,8 @@ export async function getPosts(): Promise<Post[]> {
 }
 
 export async function getPost(slug: string): Promise<Post | undefined> {
-  const posts = await loadAllPosts();
-  return posts.find((p) => p.slug === slug);
+  await loadAllPosts();
+  return _postsBySlug?.get(slug);
 }
 
 export async function getTags(): Promise<{ name: string; count: number }[]> {

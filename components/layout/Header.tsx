@@ -2,13 +2,12 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { NAV, SITE } from '@/lib/constants';
+import { NAV, SITE, RESTRICTED_ROUTES } from '@/lib/constants';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useRole } from '@/hooks/useRole';
 import styles from '@/styles/components/Header.module.scss';
 
-// Routes restricted to blogger only
-const RESTRICTED = new Set(['/archives']);
+const RESTRICTED = new Set<string>(RESTRICTED_ROUTES);
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
