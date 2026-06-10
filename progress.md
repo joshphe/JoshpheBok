@@ -56,12 +56,23 @@
 - Added `@vercel/speed-insights` + `@vercel/analytics`
 - Domain: joshphe.xyz (mobile DNS issue resolved by disabling Private DNS)
 
+### Auth Gate (2026-06-09 afternoon)
+- **Landing page**: Full-screen random bg image + glass card login
+- **Guest access**: Home (`/`), Tags (`/tags`), About (`/about`)
+- **Blogger access**: All pages (token: SHA-256 hashed, no plaintext in source)
+- **Token verification**: Web Crypto API, client-side SHA-256 compare
+- **Session**: `sessionStorage('mybok_auth')` — cleared on tab close
+- **Role guard**: `useRole` hook + `PageGuard` component for restricted routes
+- **Header**: Hidden nav links for guests (archives removed)
+- **New files**: `components/auth/AuthGuard.tsx`, `components/auth/PageGuard.tsx`, `hooks/useRole.ts`
+
 ### Post-archive Tasks
 - [x] Vercel deployment with custom domain
 - [x] Clean up unused files + velite dependency
 - [x] FinanceTicker interval polling (5 min)
 - [x] Design overhaul (P0/P1/P2)
 - [x] Speed Insights + Analytics
+- [x] Auth gate (guest/blogger role system)
 
 ---
 
@@ -83,8 +94,11 @@ MyBok/
 │   ├── search/page.tsx           # Client-side search (fuse.js)
 │   └── tags/page.tsx             # Article directory (flat by date)
 ├── components/
+│   ├── auth/
+│   │   ├── AuthGuard.tsx          # Full-screen login gate
+│   │   └── PageGuard.tsx          # Role-based page restriction
 │   ├── layout/
-│   │   ├── Header.tsx            # Sticky glass header (blur 24px)
+│   │   ├── Header.tsx            # Sticky glass header, role-aware nav
 │   │   └── Footer.tsx            # Compact footer
 │   ├── post/
 │   │   ├── PostCard.tsx
@@ -102,6 +116,8 @@ MyBok/
 │       ├── DreamQuote.tsx
 │       └── FinanceTicker.tsx      # Glass overlay on Hero, Promise.allSettled, 5min poll
 ├── content/posts/                 # 8 markdown articles
+├── hooks/
+│   └── useRole.ts                 # Role reader from sessionStorage
 ├── data/                          # (empty — friends.json, musics.json removed)
 ├── lib/
 │   ├── constants.ts
@@ -121,6 +137,18 @@ MyBok/
 ├── .node-version                  # Node 22
 ├── next.config.mjs                # output: 'export', images.unoptimized
 └── package.json                   # Cleaned (no velite)
+```
+
+### Auth Flow
+
+```
+访问网站 → AuthGuard (全屏玻璃卡片)
+              ├─ 👁️ 游客访问 → sessionStorage('mybok_auth','guest')
+              │     ├─ 首页 ✅ 目录 ✅ 关于 ✅
+              │     └─ 归档/文章/搜索 🔒 PageGuard 拦截
+              └─ 🔑 博主登录 → SHA-256 令牌验证
+                    ├─ sessionStorage('mybok_auth','blogger')
+                    └─ 全部页面可访问 ✅
 ```
 
 ### Page Layout (Homepage)

@@ -17,7 +17,8 @@
       "Bash(file public/images/background/*.jpg)",
       "Bash(sips -Z 1920 /Users/0xjasper/Documents/MyBok/public/images/background/banner-bg.jpg --out /Users/0xjasper/Documents/MyBok/public/images/background/banner-bg_opt.jpg)",
       "Bash(sips -Z 1920 /Users/0xjasper/Documents/MyBok/public/images/background/banner-bg.jpg --out /Users/0xjasper/Documents/MyBok/public/images/background/banner-bg.jpg)",
-      "Bash(shasum -a 256)"
+      "Bash(shasum -a 256)",
+      "Bash(npx next *)"
     ]
   }
 }

@@ -9,7 +9,6 @@ const TOKEN_HASH = '2e3ddecefd23265ae6ee9af3d374df6087a2678c35bfeadaeab9de215107
 
 // All available background images
 const BG_IMAGES = [
-  '/images/background/banner-bg.jpg',
   '/images/background/bg-1.jpg',
   '/images/background/bg-2.jpg',
   '/images/background/bg-3.jpg',

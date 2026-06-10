@@ -1,6 +1,5 @@
 import type { Post } from '@/lib/posts';
 import { formatDateCN } from '@/lib/utils';
-import Link from 'next/link';
 import styles from '@/styles/components/PostDetail.module.scss';
 
 export default function PostDetail({ post }: { post: Post }) {
@@ -11,17 +10,15 @@ export default function PostDetail({ post }: { post: Post }) {
         <div className={styles.meta}>
           <time dateTime={post.date}>{formatDateCN(post.date)}</time>
           {post.categories.length > 0 && (
-            <Link href={`/categories/${post.categories[0]}`} className={styles.category}>
-              {post.categories[0]}
-            </Link>
+            <span className={styles.category}>{post.categories[0]}</span>
           )}
         </div>
         {post.tags.length > 0 && (
           <div className={styles.tags}>
             {post.tags.map((tag) => (
-              <Link key={tag} href={`/tags/${tag}`} className={styles.tag}>
+              <span key={tag} className={styles.tag}>
                 # {tag}
-              </Link>
+              </span>
             ))}
           </div>
         )}
