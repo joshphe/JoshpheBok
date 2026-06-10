@@ -22,6 +22,11 @@
   --shadow-hover: #{$shadow-hover};
   --shadow-warm: #{$shadow-warm};
   --radius-card: #{$radius-md};
+  // Ticker (light theme: dark text on light bg)
+  --ticker-bg: rgba(0, 0, 0, 0.04);
+  --ticker-border: rgba(0, 0, 0, 0.08);
+  --ticker-text: #{$color-text};
+  --ticker-text-dim: #{$color-text-secondary};
 }
 
 [data-theme='dark'] {
@@ -37,6 +42,11 @@
   --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.2);
   --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.3);
   --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.4);
+  // Ticker (dark theme: light text on dark bg)
+  --ticker-bg: rgba(255, 255, 255, 0.08);
+  --ticker-border: rgba(255, 255, 255, 0.12);
+  --ticker-text: rgba(255, 255, 255, 0.9);
+  --ticker-text-dim: rgba(255, 255, 255, 0.55);
 }
 
 *,
@@ -104,6 +114,26 @@ pre {
   font-family: var(--font-mono);
   border-radius: $radius-sm;
   overflow-x: auto;
+}
+
+// ── Sticky card-stack panels (Mobbin-style section transitions) ──
+.stickyPanel {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+// ── Shared fade-in-up animation ──
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 // ── Main content offset for fixed nav ──

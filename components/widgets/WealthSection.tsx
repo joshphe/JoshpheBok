@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import type { MarketData } from '@/lib/market-data';
 import { fetchAllMarketData } from '@/lib/market-data';
 import MarketCard from './MarketCard';
+import FinanceTicker from './FinanceTicker';
 import styles from '@/styles/components/WealthSection.module.scss';
 
 export default function WealthSection() {
@@ -34,6 +35,7 @@ export default function WealthSection() {
 
   return (
     <section className={styles.section}>
+      <FinanceTicker />
       <div className={styles.inner}>
         {/* ── Top half: 3 market cards ── */}
         <div className={styles.top}>

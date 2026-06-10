@@ -2,21 +2,13 @@
 
 .banner {
   position: relative;
-  min-height: 60vh;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   isolation: isolate;
   background: #2a2a2a; // fallback while image loads
-
-  @media (min-width: $bp-md) {
-    min-height: 75vh;
-  }
-
-  @media (min-width: $bp-lg) {
-    min-height: 100vh;
-  }
 
   // Subtle darkening overlay for text readability
   &::before {

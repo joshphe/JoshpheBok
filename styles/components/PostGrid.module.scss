@@ -1,21 +1,19 @@
 @use '../variables' as *;
 
-// ── Full-viewport home posts section (matches hero proportion) ──
+// ── Full-viewport home posts section (card-stack sticky panel) ──
 .homePosts {
-  min-height: 60vh;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  height: 100vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: $spacing-xl 0;
   background: var(--color-bg);
-
-  @media (min-width: $bp-md) {
-    min-height: 75vh;
-  }
-
-  @media (min-width: $bp-lg) {
-    height: 100vh;
-  }
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.4), 0 -2px 10px rgba(0, 0, 0, 0.18);
+  border-top: none;
 }
 
 .homeHeading {
@@ -26,6 +24,8 @@
   text-align: center;
   margin-bottom: $spacing-lg;
   letter-spacing: 0.04em;
+  animation: fadeInUp 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: 0.05s;
 
   @media (min-width: $bp-md) {
     font-size: $font-size-2xl;
@@ -38,6 +38,14 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: $spacing-lg;
+
+  // Staggered fade-in for post cards
+  > * {
+    animation: fadeInUp 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    &:nth-child(1) { animation-delay: 0.12s; }
+    &:nth-child(2) { animation-delay: 0.24s; }
+    &:nth-child(3) { animation-delay: 0.36s; }
+  }
 
   @media (min-width: $bp-sm) {
     grid-template-columns: repeat(2, 1fr);

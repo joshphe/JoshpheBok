@@ -1,11 +1,11 @@
 @use '../variables' as *;
 
 .strip {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--ticker-bg);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid var(--ticker-border);
+  border-bottom: 1px solid var(--ticker-border);
   overflow: hidden;
 }
 
@@ -50,29 +50,30 @@
 
 .symbol {
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--ticker-text);
   font-family: var(--font-mono);
   font-size: 0.85rem;
 }
 
 .price {
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--ticker-text);
   font-variant-numeric: tabular-nums;
+  opacity: 0.9;
 }
 
 .change {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  color: rgba(255, 255, 255, 0.7);
-  &.up   { color: #8FBC8F; }
-  &.down { color: #D4A76A; }
+  color: var(--ticker-text-dim);
+  &.up   { color: var(--color-primary-light); }
+  &.down { color: var(--color-accent-warm); }
 }
 
 // ── Placeholder ──
 
 .placeholder {
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--ticker-text-dim);
   font-size: $font-size-sm;
   font-style: italic;
   padding: 0 $spacing-md;

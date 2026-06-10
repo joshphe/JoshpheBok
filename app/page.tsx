@@ -4,9 +4,9 @@ import { SITE } from '@/lib/constants';
 import { getPosts } from '@/lib/posts';
 import { shuffleArray } from '@/lib/utils';
 import BannerCover from '@/components/widgets/BannerCover';
-import FinanceTicker from '@/components/widgets/FinanceTicker';
 import WealthSection from '@/components/widgets/WealthSection';
 import PostGrid from '@/components/post/PostGrid';
+import ScrollSnapper from '@/components/layout/ScrollSnapper';
 import styles from '@/styles/components/PostGrid.module.scss';
 import type { Metadata } from 'next';
 
@@ -30,12 +30,9 @@ export default async function HomePage() {
   const bgImages = getBgImages();
 
   return (
-    <>
-      <div style={{ position: 'relative' }} data-hero>
+    <ScrollSnapper>
+      <div style={{ position: 'sticky', top: 0, height: '100vh', zIndex: 1, overflow: 'hidden' }} data-hero>
         <BannerCover images={bgImages} />
-        <div style={{ position: 'absolute', top: 64, left: 0, right: 0, zIndex: 2 }}>
-          <FinanceTicker />
-        </div>
       </div>
       <WealthSection />
       <section className={styles.homePosts}>
@@ -44,6 +41,6 @@ export default async function HomePage() {
           <PostGrid posts={picks} />
         </div>
       </section>
-    </>
+    </ScrollSnapper>
   );
 }
