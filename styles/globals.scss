@@ -106,6 +106,17 @@ pre {
   overflow-x: auto;
 }
 
+// ── Main content offset for fixed nav ──
+// Homepage hero is full-screen (detected via [data-hero]), no offset needed.
+// Inner pages need room below the fixed NavCards strip.
+main {
+  padding-top: 68px;
+
+  &:has([data-hero]) {
+    padding-top: 0;
+  }
+}
+
 // ── Container ──
 .container {
   max-width: $max-width;

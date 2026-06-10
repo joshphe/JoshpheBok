@@ -3,7 +3,11 @@
 import { useEffect, useState } from 'react';
 import styles from '@/styles/components/ThemeToggle.module.scss';
 
-export default function ThemeToggle() {
+interface Props {
+  variant?: 'default' | 'subtle';
+}
+
+export default function ThemeToggle({ variant = 'default' }: Props) {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mounted, setMounted] = useState(false);
 
@@ -23,8 +27,12 @@ export default function ThemeToggle() {
   };
 
   return (
-    <button className={styles.toggle} onClick={toggle} aria-label="切换主题">
-      {mounted ? (theme === 'light' ? '🌙' : '☀️') : '🌙'}
+    <button
+      className={`${styles.toggle} ${variant === 'subtle' ? styles.subtle : ''}`}
+      onClick={toggle}
+      aria-label="切换主题"
+    >
+      {mounted ? (theme === 'light' ? '🌝' : '🌞') : '🌝'}
     </button>
   );
 }

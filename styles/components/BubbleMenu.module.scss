@@ -1,0 +1,136 @@
+@use '../variables' as *;
+
+// ── Floating glass pill navbar ──
+
+.nav {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 40px;
+  border-radius: 9999px;
+  max-width: calc(100vw - 28px);
+  width: auto;
+
+  // Glass morphism
+  background: rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.06),
+    0 4px 16px rgba(0, 0, 0, 0.08);
+
+  @media (min-width: $bp-md) {
+    top: 20px;
+    height: 48px;
+    padding: 0 56px;
+  }
+}
+
+// ── Logo ──
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-right: 56px;
+
+  @media (min-width: $bp-md) {
+    margin-right: 72px;
+  }
+}
+
+.logoText {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+  @media (min-width: $bp-md) {
+    font-size: 1rem;
+  }
+}
+
+// ── Center nav links ──
+.links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  flex-shrink: 0;
+
+  @media (min-width: $bp-md) {
+    gap: 48px;
+  }
+}
+
+.link {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  padding: 3px 0;
+  position: relative;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  transition: color 0.2s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    border-radius: 1px;
+    background: rgba(255, 255, 255, 0.8);
+    transition: width 0.25s ease;
+  }
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.95);
+    &::after { width: 100%; }
+  }
+
+  &.linkActive {
+    color: rgba(255, 255, 255, 0.95);
+    &::after { width: 100%; }
+  }
+
+  @media (min-width: $bp-md) {
+    font-size: 0.875rem;
+  }
+}
+
+// ── Mobile ──
+@media (max-width: ($bp-sm - 1)) {
+  .nav {
+    top: 10px;
+    height: 44px;
+    padding: 0 18px;
+  }
+
+  .logo {
+    margin-right: 24px;
+  }
+
+  .logoText { font-size: 0.85rem; }
+
+  .links { gap: 18px; }
+  .link { font-size: 0.78rem; }
+}
+
+@media (max-width: 380px) {
+  .logoText { display: none; }
+  .logo { margin-right: 14px; }
+  .links { gap: 12px; }
+}

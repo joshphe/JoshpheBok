@@ -15,7 +15,7 @@
   }
 
   @media (min-width: $bp-lg) {
-    min-height: calc(100vh - $header-height);
+    min-height: 100vh;
   }
 
   // Subtle darkening overlay for text readability

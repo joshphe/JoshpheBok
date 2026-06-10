@@ -25,7 +25,15 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/tags)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/about)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/archives)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/search)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/search)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(curl -s http://localhost:3000/about)",
+      "Bash(curl -s -o /dev/null -w \"Homepage: %{http_code}\\\\n\" http://localhost:3000)",
+      "Bash(curl -s -o /dev/null -w \"About: %{http_code}\\\\n\" http://localhost:3000/about)",
+      "Bash(curl -s -o /dev/null -w \"Posts: %{http_code}\\\\n\" http://localhost:3000/posts)",
+      "Bash(curl -s -o /dev/null -w \"Home: %{http_code}\\\\n\" http://localhost:3000)",
+      "Bash(lsof -ti:3000 -ti:3001)",
+      "Bash(xargs kill)"
     ]
   }
 }

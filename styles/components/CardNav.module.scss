@@ -1,0 +1,235 @@
+@use '../variables' as *;
+
+// ── CardNav: glass top bar → expanding card menu ──
+
+.container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 680px;
+  z-index: 1000;
+
+  @media (min-width: $bp-md) {
+    top: 28px;
+    width: 90%;
+  }
+}
+
+// ── Navigation shell ──
+.nav {
+  height: 56px;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  will-change: height;
+
+  // Glass morphism — works on any background
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  &.open {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow:
+      0 8px 40px rgba(0, 0, 0, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+}
+
+// ── Top bar (always visible) ──
+.top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px 0 16px;
+  z-index: 2;
+}
+
+// ── Hamburger ──
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+
+  &:hover { background: rgba(255, 255, 255, 0.1); }
+}
+
+.hamLine {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform-origin: center;
+}
+
+.hamOpen {
+  .hamLine:first-child { transform: translateY(3.5px) rotate(45deg); }
+  .hamLine:last-child  { transform: translateY(-3.5px) rotate(-45deg); }
+}
+
+// ── Logo ──
+.logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.92) !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+
+  &:hover { opacity: 0.85; }
+}
+
+// ── Expanded content ──
+.content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 56px;
+  bottom: 0;
+  padding: 6px 10px 10px;
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.open .content {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+// ── Cards ──
+.card {
+  height: 100%;
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 16px 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+
+  // Subtle inner gradient for depth
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  &.cardActive {
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.4);
+  }
+}
+
+.cardLabel {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 1;
+}
+
+.cardDesc {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-top: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.cardArrow {
+  margin-top: auto;
+  align-self: flex-end;
+  font-size: 1.1rem;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all 0.25s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.card:hover .cardArrow {
+  opacity: 0.8;
+  transform: translateX(0);
+}
+
+// ── Mobile ──
+@media (max-width: ($bp-md - 1)) {
+  .container {
+    width: calc(100% - 32px);
+    top: 16px;
+  }
+
+  .content {
+    flex-direction: column;
+    gap: 6px;
+    padding: 4px 8px 8px;
+  }
+
+  .card {
+    min-height: 56px;
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .cardLabel { font-size: 1.15rem; }
+
+  .cardDesc {
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: 8px;
+  }
+
+  .cardArrow { display: none; }
+}
+
+// ── Non-homepage pages (no hero image) ──
+// When body background is light, the glass bubble needs more presence.
+// The backdrop-filter + border already handle this adaptively.

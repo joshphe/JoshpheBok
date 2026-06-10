@@ -3,7 +3,8 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import { SITE } from '@/lib/constants';
 import AuthGuard from '@/components/auth/AuthGuard';
-import Header from '@/components/layout/Header';
+import BubbleMenu from '@/components/layout/BubbleMenu';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/ui/BackToTop';
 import '@/styles/globals.scss';
@@ -54,7 +55,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <AuthGuard>
-          <Header />
+          <BubbleMenu />
+          <div style={{ position: 'fixed', top: 20, right: 22, zIndex: 1001 }}>
+            <ThemeToggle variant="subtle" />
+          </div>
           <main>{children}</main>
           <Footer />
           <BackToTop />

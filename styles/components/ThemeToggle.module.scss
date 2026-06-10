@@ -16,4 +16,20 @@
     background: var(--color-primary);
     transform: rotate(15deg);
   }
+
+  // Subtle variant: transparent, for use in glass overlays
+  &.subtle {
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      transform: rotate(15deg);
+    }
+  }
 }

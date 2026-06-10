@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { NAV, SITE, RESTRICTED_ROUTES } from '@/lib/constants';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useRole } from '@/hooks/useRole';
@@ -12,11 +13,24 @@ const RESTRICTED = new Set<string>(RESTRICTED_ROUTES);
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const role = useRole();
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+  // Non-homepage: always glass; homepage: transparent until scrolled
+  const [scrolled, setScrolled] = useState(!isHome);
+
+  useEffect(() => {
+    if (!isHome) return;
+
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [isHome]);
 
   const visibleNav = role === 'blogger' ? NAV : NAV.filter((item) => !RESTRICTED.has(item.href));
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.inner}>
         <Link href="/" className={styles.logo}>
           {SITE.title}

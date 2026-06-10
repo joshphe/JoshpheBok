@@ -1,18 +1,82 @@
 @use '../variables' as *;
 
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
-  background: rgba(255, 253, 249, 0.72);
-  backdrop-filter: blur(24px) saturate(1.2);
-  -webkit-backdrop-filter: blur(24px) saturate(1.2);
-  border-bottom: 1px solid var(--color-border);
   height: $header-height;
-  transition: background $transition-natural;
+  transition:
+    background $transition-natural,
+    border-color $transition-natural,
+    box-shadow $transition-natural;
 
-  [data-theme='dark'] & {
-    background: rgba(36, 48, 36, 0.72);
+  // ── Default: transparent overlay on hero ──
+  background: transparent;
+  border-bottom: 1px solid transparent;
+
+  .logo {
+    color: rgba(255, 255, 255, 0.95) !important;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  .navLink {
+    color: rgba(255, 255, 255, 0.78);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+
+    &::after { background: rgba(255, 255, 255, 0.6); }
+
+    &:hover {
+      color: #fff;
+      &::after { background: rgba(255, 255, 255, 0.9); }
+    }
+  }
+
+  .hamburger {
+    background: rgba(255, 255, 255, 0.9);
+
+    &::before, &::after { background: rgba(255, 255, 255, 0.9); }
+
+    &.open { background: transparent; }
+  }
+
+  // ── Scrolled: glass morph ──
+  &.scrolled {
+    background: rgba(255, 253, 249, 0.72);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06);
+
+    [data-theme='dark'] & {
+      background: rgba(36, 48, 36, 0.72);
+    }
+
+    .logo {
+      color: var(--color-text) !important;
+      text-shadow: none;
+    }
+
+    .navLink {
+      color: var(--color-text-secondary);
+      text-shadow: none;
+
+      &::after { background: var(--color-primary); }
+
+      &:hover {
+        color: var(--color-primary);
+        &::after { background: var(--color-primary); }
+      }
+    }
+
+    .hamburger {
+      background: var(--color-text);
+
+      &::before, &::after { background: var(--color-text); }
+
+      &.open { background: transparent; }
+    }
   }
 }
 
@@ -30,7 +94,6 @@
   font-family: var(--font-heading);
   font-size: 1.35rem;
   font-weight: 700;
-  color: var(--color-text) !important;
   letter-spacing: 0.03em;
 }
 
@@ -41,7 +104,6 @@
 }
 
 .navLink {
-  color: var(--color-text-secondary);
   font-size: $font-size-base;
   padding: $spacing-xs 0;
   position: relative;
@@ -54,14 +116,10 @@
     width: 0;
     height: 2px;
     border-radius: 1px;
-    background: var(--color-primary);
     transition: width $transition-natural;
   }
 
-  &:hover {
-    color: var(--color-primary);
-    &::after { width: 100%; }
-  }
+  &:hover::after { width: 100%; }
 }
 
 .actions {
@@ -86,10 +144,9 @@
   display: block;
   width: 22px;
   height: 2px;
-  background: var(--color-text);
   border-radius: 1px;
   position: relative;
-  transition: background $transition-gentle;
+  transition: background $transition-gentle, transform $transition-gentle;
 
   &::before, &::after {
     content: '';
@@ -98,7 +155,6 @@
     width: 100%;
     height: 2px;
     border-radius: 1px;
-    background: var(--color-text);
     transition: transform $transition-natural;
   }
   &::before { top: -7px; }
