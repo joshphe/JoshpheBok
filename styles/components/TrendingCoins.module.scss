@@ -1,0 +1,71 @@
+@use '../variables' as *;
+
+// ── Trending Coins List (compact) ──
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+
+  & + & {
+    border-top: 1px solid rgba(128, 128, 128, 0.08);
+  }
+}
+
+.rank {
+  font-size: 0.65rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+  min-width: 24px;
+  text-align: center;
+  background: var(--color-bg);
+  border-radius: $radius-xs;
+  padding: 1px 4px;
+  flex-shrink: 0;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--color-bg);
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.symbol {
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.name {
+  font-size: 0.65rem;
+  color: var(--color-text-secondary);
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.price {
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-accent-warm);
+  font-weight: 500;
+  flex-shrink: 0;
+}

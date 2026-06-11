@@ -2,12 +2,12 @@
 
 .card {
   background: var(--color-surface);
-  border-radius: $radius-md;
+  border-radius: $radius-sm;
   border: 1px solid var(--color-border);
-  padding: $spacing-lg;
+  padding: $spacing-xs $spacing-sm;
   display: flex;
   flex-direction: column;
-  gap: $spacing-md;
+  gap: 4px;
   transition: box-shadow $transition-gentle, border-color $transition-gentle;
 
   &:hover {
@@ -22,19 +22,19 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  padding-bottom: $spacing-sm;
+  padding-bottom: 5px;
   border-bottom: 1px solid var(--color-border);
 }
 
 .title {
   font-family: var(--font-heading);
-  font-size: $font-size-lg;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--color-text);
 }
 
 .subtitle {
-  font-size: $font-size-sm;
+  font-size: 0.65rem;
   color: var(--color-text-secondary);
 }
 
@@ -43,7 +43,7 @@
 .body {
   display: flex;
   flex-direction: column;
-  gap: $spacing-sm;
+  gap: 2px;
 }
 
 // ── Row ──
@@ -52,38 +52,38 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 0;
+  padding: 4px 0;
 
   & + & {
-    border-top: 1px solid rgba(128, 128, 128, 0.12);
+    border-top: 1px solid rgba(128, 128, 128, 0.1);
   }
 }
 
 .name {
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--color-text);
-  min-width: 80px;
+  min-width: 70px;
 }
 
 .price {
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
   color: var(--color-text);
   text-align: right;
   flex: 1;
-  padding: 0 $spacing-sm;
+  padding: 0 8px;
 }
 
 .change {
   font-weight: 500;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
   text-align: right;
-  min-width: 120px;
+  min-width: 110px;
   color: var(--color-text-secondary);
 
-  &.up   { color: #D4A76A; }  // warm gold for up (Chinese convention: red for up, but using site's gold)
-  &.down { color: #8FBC8F; }  // green for down
+  &.up   { color: #D4A76A; }
+  &.down { color: #8FBC8F; }
 }

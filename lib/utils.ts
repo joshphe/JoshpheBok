@@ -38,6 +38,26 @@ export function hashCode(str: string): number {
   return Math.abs(hash);
 }
 
+/** Format a number as currency string */
+export function formatCurrency(value: number): string {
+  if (value >= 1_000_000) {
+    return '$' + (value / 1_000_000).toFixed(2) + 'M';
+  }
+  if (value >= 1_000) {
+    return '$' + (value / 1_000).toFixed(2) + 'K';
+  }
+  return '$' + value.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+/** Format a number as percentage string with sign */
+export function formatPercent(value: number): string {
+  const sign = value >= 0 ? '+' : '';
+  return sign + value.toFixed(2) + '%';
+}
+
 /** Group posts by year and month for archives */
 export function groupByYearMonth<T extends { date: string }>(posts: T[]): [string, T[]][] {
   const map = new Map<string, T[]>();

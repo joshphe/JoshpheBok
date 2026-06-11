@@ -1,0 +1,112 @@
+@use '../../variables' as *;
+@use '../../mixins' as *;
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-sm;
+  margin-bottom: $spacing-lg;
+
+  @media (min-width: $bp-md) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card {
+  @include card-organic;
+  padding: $spacing-md;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font-size: $font-size-sm;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.value {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+
+  &.positive {
+    color: var(--color-primary-light);
+  }
+
+  &.negative {
+    color: var(--color-accent-warm);
+  }
+}
+
+.subtext {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+
+  &.positive {
+    color: var(--color-primary-light);
+  }
+
+  &.negative {
+    color: var(--color-accent-warm);
+  }
+}
+
+// ── Skeleton loading ──
+
+.skeleton {
+  @include card-organic;
+  padding: $spacing-md;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.skelLabel {
+  width: 60%;
+  height: 14px;
+  background: var(--color-border);
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skelValue {
+  width: 80%;
+  height: 28px;
+  background: var(--color-border);
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+  animation-delay: 0.15s;
+}
+
+.skelSub {
+  width: 45%;
+  height: 12px;
+  background: var(--color-border);
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}

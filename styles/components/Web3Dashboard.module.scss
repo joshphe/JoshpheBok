@@ -1,0 +1,63 @@
+@use '../variables' as *;
+
+// ── Card base (used as grid children, no outer wrapper) ──
+
+.card {
+  background: var(--color-surface);
+  border-radius: $radius-sm;
+  border: 1px solid var(--color-border);
+  padding: $spacing-xs $spacing-sm;
+  transition: box-shadow $transition-gentle, border-color $transition-gentle;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    box-shadow: $shadow-card;
+    border-color: var(--color-primary-light);
+  }
+}
+
+// ── Card header ──
+.cardHeader {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  line-height: 1.3;
+}
+
+.cardBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
+// ── Placeholder ──
+.placeholder {
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  text-align: center;
+  padding: $spacing-sm 0;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+// ── Trending spans full width on desktop ──
+.span3 {
+  @media (min-width: $bp-lg) {
+    grid-column: 1 / -1;
+    max-width: 66%;
+    justify-self: center;
+    width: 100%;
+  }
+}

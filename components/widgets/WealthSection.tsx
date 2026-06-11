@@ -5,6 +5,7 @@ import type { MarketData } from '@/lib/market-data';
 import { fetchAllMarketData } from '@/lib/market-data';
 import MarketCard from './MarketCard';
 import FinanceTicker from './FinanceTicker';
+import Web3Dashboard from './Web3Dashboard';
 import styles from '@/styles/components/WealthSection.module.scss';
 
 export default function WealthSection() {
@@ -20,7 +21,6 @@ export default function WealthSection() {
 
     load();
 
-    // Refresh every 5 minutes
     const interval = setInterval(load, 5 * 60 * 1000);
 
     return () => {
@@ -35,10 +35,11 @@ export default function WealthSection() {
 
   return (
     <section className={styles.section}>
-      <FinanceTicker />
-      <div className={styles.inner}>
-        {/* ── Top half: 3 market cards ── */}
-        <div className={styles.top}>
+      <div className={styles.outerCard}>
+        <div className={styles.tickerWrap}>
+          <FinanceTicker />
+        </div>
+        <div className={styles.dashboard}>
           <MarketCard
             title="A股市场"
             subtitle="上证 · 沪深 · 创业板"
@@ -55,11 +56,8 @@ export default function WealthSection() {
             items={crypto}
             isCrypto
           />
-        </div>
 
-        {/* ── Bottom half: placeholder ── */}
-        <div className={styles.bottom}>
-          <p className={styles.comingSoon}>敬请期待</p>
+          <Web3Dashboard />
         </div>
       </div>
     </section>

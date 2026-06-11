@@ -1,10 +1,12 @@
 @use '../variables' as *;
 
 .strip {
+  position: sticky;
+  top: 0;
+  z-index: 3;
   background: var(--ticker-bg);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border-top: 1px solid var(--ticker-border);
   border-bottom: 1px solid var(--ticker-border);
   overflow: hidden;
 }
@@ -16,9 +18,9 @@
 .run {
   display: flex;
   align-items: center;
-  gap: $spacing-lg;
+  gap: $spacing-md;
   width: max-content;
-  padding: 13px 0;
+  padding: 6px 0;
   animation: scroll 30s linear infinite;
 
   .strip:hover & {
@@ -35,15 +37,15 @@
 .item {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.9rem;
+  gap: 6px;
+  font-size: 0.75rem;
   flex-shrink: 0;
   white-space: nowrap;
 }
 
 .dot {
-  width: 9px;
-  height: 9px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -52,7 +54,7 @@
   font-weight: 700;
   color: var(--ticker-text);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.72rem;
 }
 
 .price {
@@ -74,9 +76,9 @@
 
 .placeholder {
   color: var(--ticker-text-dim);
-  font-size: $font-size-sm;
+  font-size: 0.72rem;
   font-style: italic;
-  padding: 0 $spacing-md;
+  padding: 0 $spacing-sm;
 }
 
 // ── Animation ──
