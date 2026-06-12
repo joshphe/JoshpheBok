@@ -81,18 +81,6 @@ toc: true
 4. 在 Settings → Environment Variables 添加所需的环境变量
 5. 添加自定义域名
 
-## 环境变量
-
-项目依赖以下环境变量（`.env.local` 本地 / Vercel Settings 生产）：
-
-| 变量 | 说明 |
-|------|------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase 项目 URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 匿名公钥（可公开） |
-| `NEXT_PUBLIC_COVALENT_API_KEY` | Covalent 链数据 API Key |
-
-> ⚠️ 切勿泄露 Supabase `service_role` key，该 key 拥有数据库完全访问权限。
-
 ## License
 
 MIT
