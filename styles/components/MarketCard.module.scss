@@ -1,19 +1,11 @@
 @use '../variables' as *;
+@use '../mixins' as *;
 
 .card {
-  background: var(--color-surface);
-  border-radius: $radius-sm;
-  border: 1px solid var(--color-border);
-  padding: $spacing-xs $spacing-sm;
+  @include card-compact;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  transition: box-shadow $transition-gentle, border-color $transition-gentle;
-
-  &:hover {
-    box-shadow: $shadow-card;
-    border-color: var(--color-primary-light);
-  }
 }
 
 // ── Header ──
@@ -84,6 +76,6 @@
   min-width: 110px;
   color: var(--color-text-secondary);
 
-  &.up   { color: #D4A76A; }
-  &.down { color: #8FBC8F; }
+  &.up   { color: var(--color-up); }
+  &.down { color: var(--color-down); }
 }

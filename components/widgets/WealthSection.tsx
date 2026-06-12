@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useCallback } from 'react';
+import { usePolling } from '@/hooks/usePolling';
 import type { MarketData } from '@/lib/market-data';
 import { fetchAllMarketData } from '@/lib/market-data';
 import MarketCard from './MarketCard';
@@ -11,23 +12,12 @@ import styles from '@/styles/components/WealthSection.module.scss';
 export default function WealthSection() {
   const [data, setData] = useState<MarketData | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
-      const result = await fetchAllMarketData();
-      if (!cancelled) setData(result);
-    }
-
-    load();
-
-    const interval = setInterval(load, 5 * 60 * 1000);
-
-    return () => {
-      cancelled = true;
-      clearInterval(interval);
-    };
+  const load = useCallback(async () => {
+    const result = await fetchAllMarketData();
+    setData(result);
   }, []);
+
+  usePolling(load);
 
   const aShares = data?.aShares ?? [];
   const usStocks = data?.usStocks ?? [];

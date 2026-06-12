@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import type { WalletConfig } from '@/lib/chain-data';
 import { usePortfolio } from './usePortfolio';
@@ -36,9 +36,18 @@ export default function AssetDashboard() {
     setAddresses(addrs);
   }, []);
 
-  const hasAddresses = addresses && (addresses.eth || addresses.bnb || addresses.sol);
+  // Track previous data state for transition detection
+  const prevHadData = useRef(false);
+  const hasData = summary != null;
 
-  // ── No wallets configured — show prompt ──
+  useEffect(() => {
+    if (hasData) prevHadData.current = true;
+  }, [hasData]);
+
+  const hasAddresses = addresses && (addresses.eth || addresses.bnb || addresses.sol);
+  const showTransition = prevHadData.current;
+
+  // ── State: No wallets configured ──
   if (!hasAddresses && !isLoading) {
     return (
       <div className={styles.page}>
@@ -69,8 +78,8 @@ export default function AssetDashboard() {
     );
   }
 
-  // ── Full-page loading ──
-  if (isLoading && !summary) {
+  // ── State: Initial loading ──
+  if (isLoading && !showTransition) {
     return (
       <div className={styles.page}>
         <div className={styles.container}>
@@ -83,8 +92,8 @@ export default function AssetDashboard() {
     );
   }
 
-  // ── Fatal error ──
-  if (error && !summary) {
+  // ── State: Fatal error (no previous data to show) ──
+  if (error && !showTransition) {
     return (
       <div className={styles.page}>
         <div className={styles.container}>
@@ -100,11 +109,12 @@ export default function AssetDashboard() {
     );
   }
 
+  // ── State: Data available (or loading refresh with cached data) ──
   return (
     <div className={styles.page}>
       <div className={styles.container}>
         {/* Header */}
-        <div className={styles.header}>
+        <div className={`${styles.header} ${showTransition ? styles.fadeIn : ''}`}>
           <h1 className={styles.title}>
             <span>📊</span>
             资产看板
@@ -122,7 +132,7 @@ export default function AssetDashboard() {
                 second: '2-digit',
               })}
               {error && (
-                <span style={{ marginLeft: 8, color: 'var(--color-accent-warm)' }}>
+                <span className={styles.partialError}>
                   (部分数据获取失败)
                 </span>
               )}
@@ -131,23 +141,35 @@ export default function AssetDashboard() {
         </div>
 
         {/* Wallet Manager */}
-        <WalletManager
-          onAddressesChange={handleAddressesChange}
-          chainErrors={chainErrors}
-          isRefreshing={isRefreshing}
-        />
+        <div className={showTransition ? styles.fadeIn : ''} style={{ animationDelay: '0.05s' }}>
+          <WalletManager
+            onAddressesChange={handleAddressesChange}
+            chainErrors={chainErrors}
+            isRefreshing={isRefreshing}
+          />
+        </div>
 
         {/* Portfolio Overview Cards */}
-        <OverviewCards summary={summary} isLoading={isLoading} />
+        <div className={showTransition ? styles.fadeIn : ''} style={{ animationDelay: '0.1s' }}>
+          <OverviewCards summary={summary} isLoading={isLoading} />
+        </div>
 
         {/* Main content: Asset List + Side Panel */}
         <div className={styles.mainGrid}>
-          <AssetList assets={assets} isLoading={isLoading} />
+          <div className={showTransition ? styles.fadeIn : ''} style={{ animationDelay: '0.15s' }}>
+            <AssetList assets={assets} isLoading={isLoading && !showTransition} />
+          </div>
 
           <div className={styles.sidePanel}>
-            <PortfolioChart assets={assets} isLoading={isLoading} />
-            <AlertSection alerts={alerts} isLoading={isLoading} />
-            <QuickActions />
+            <div className={showTransition ? styles.fadeIn : ''} style={{ animationDelay: '0.2s' }}>
+              <PortfolioChart assets={assets} isLoading={isLoading && !showTransition} />
+            </div>
+            <div className={showTransition ? styles.fadeIn : ''} style={{ animationDelay: '0.25s' }}>
+              <AlertSection alerts={alerts} isLoading={isLoading && !showTransition} />
+            </div>
+            <div className={showTransition ? styles.fadeIn : ''} style={{ animationDelay: '0.3s' }}>
+              <QuickActions />
+            </div>
           </div>
         </div>
 

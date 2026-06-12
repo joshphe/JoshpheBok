@@ -86,14 +86,8 @@ export default function SlidingFooter() {
     </div>
   );
 
-  // ── Inner pages: normal static footer ──
-  if (!isHome) {
-    return (
-      <footer className={styles.static}>
-        {content}
-      </footer>
-    );
-  }
+  // ── Inner pages: no footer ──
+  if (!isHome) return null;
 
   // ── Homepage: sliding footer (hidden until overscroll) ──
   return (

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { ChainBalance, WalletConfig } from '@/lib/chain-data';
 import { fetchEthWallet, fetchBnbWallet, fetchSolWallet } from '@/lib/chain-data';
+import { usePolling } from '@/hooks/usePolling';
 import type {
   PortfolioSummary,
   PortfolioAsset,
@@ -16,10 +17,10 @@ const COST_BASIS: Record<string, number> = {
   ETH: 3200,
   BNB: 580,
   SOL: 95,
-  '0xdac17f958d2ee523a2206206994597c13d831ec7': 1.0,   // USDT (ERC-20)
-  '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': 1.0,   // USDC (ERC-20)
-  '0x55d398326f99059ff775485246999027b3197955': 1.0,   // USDT (BSC)
-  '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d': 1.0,   // USDC (BSC)
+  '0xdac17f958d2ee523a2206206994597c13d831ec7': 1.0,
+  '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': 1.0,
+  '0x55d398326f99059ff775485246999027b3197955': 1.0,
+  '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d': 1.0,
 };
 
 function getCostBasis(symbol: string, contractAddress?: string): number {
@@ -32,15 +33,14 @@ function getCostBasis(symbol: string, contractAddress?: string): number {
 }
 
 const POLL_INTERVAL = 5 * 60 * 1000;
+const MIN_TOKEN_VALUE_USD = 2;
 
 // ── Convert chain balances → assets ──
 
-const MIN_TOKEN_VALUE_USD = 2; // Only show tokens worth ≥ $2
-
 function chainToAssets(cb: ChainBalance): PortfolioAsset[] {
   const assets: PortfolioAsset[] = [];
-  const nativeNames: Record<string, string> = { eth: 'Ethereum', bnb: 'BNB', sol: 'Solana' };
   const nativeSymbols: Record<string, string> = { eth: 'ETH', bnb: 'BNB', sol: 'SOL' };
+  const nativeNames: Record<string, string> = { eth: 'Ethereum', bnb: 'BNB', sol: 'Solana' };
 
   const symbol = nativeSymbols[cb.chain] ?? cb.chain.toUpperCase();
   const name = nativeNames[cb.chain] ?? cb.chain;
@@ -48,7 +48,6 @@ function chainToAssets(cb: ChainBalance): PortfolioAsset[] {
   const amount = cb.nativeBalance;
   const cost = getCostBasis(symbol);
 
-  // Always show native coin if balance > 0
   if (amount > 0) {
     assets.push({
       symbol, name, amount, currentPrice: price, costBasis: cost,
@@ -59,7 +58,6 @@ function chainToAssets(cb: ChainBalance): PortfolioAsset[] {
     });
   }
 
-  // Only show tokens worth ≥ $2
   for (const t of cb.tokens) {
     const tp = t.price ?? 0;
     const tv = t.balance * tp;
@@ -143,7 +141,6 @@ function generateAlerts(assets: PortfolioAsset[]): AlertItem[] {
 export function usePortfolio(addresses: WalletConfig | null): DashboardData & {
   chainErrors: Record<string, string | undefined>;
 } {
-  // Per-chain state — each chain updates independently
   const [ethData, setEthData] = useState<ChainBalance | null>(null);
   const [bnbData, setBnbData] = useState<ChainBalance | null>(null);
   const [solData, setSolData] = useState<ChainBalance | null>(null);
@@ -178,11 +175,10 @@ export function usePortfolio(addresses: WalletConfig | null): DashboardData & {
     const errors: Record<string, string | undefined> = {};
     const now = new Date();
 
-    // Fire all 3 chains in parallel — each updates state independently as it resolves
-    const tasks = [
-      { chain: 'eth' as const, fn: fetchEthWallet, addr: addresses.eth },
-      { chain: 'bnb' as const, fn: fetchBnbWallet, addr: addresses.bnb },
-      { chain: 'sol' as const, fn: fetchSolWallet, addr: addresses.sol },
+    const tasks: Array<{ chain: 'eth' | 'bnb' | 'sol'; fn: (addr: string) => Promise<ChainBalance>; addr: string }> = [
+      { chain: 'eth', fn: fetchEthWallet, addr: addresses.eth },
+      { chain: 'bnb', fn: fetchBnbWallet, addr: addresses.bnb },
+      { chain: 'sol', fn: fetchSolWallet, addr: addresses.sol },
     ];
 
     await Promise.allSettled(
@@ -221,15 +217,13 @@ export function usePortfolio(addresses: WalletConfig | null): DashboardData & {
     load();
   }, [load]);
 
+  // Cleanup on unmount
   useEffect(() => {
     cancelled.current = false;
-    load();
-    const interval = setInterval(load, POLL_INTERVAL);
-    return () => {
-      cancelled.current = true;
-      clearInterval(interval);
-    };
-  }, [load]);
+    return () => { cancelled.current = true; };
+  }, []);
+
+  usePolling(load, POLL_INTERVAL);
 
   return {
     summary, assets, alerts, isLoading, isRefreshing,

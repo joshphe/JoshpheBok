@@ -185,3 +185,11 @@ main {
   border-radius: $radius-full;
   &:hover { background: var(--color-primary); }
 }
+
+// ── Shared directional color utilities (up = positive, down = negative) ──
+// These tokens are intentionally swapped: green = growth = positive (for crypto/indices),
+// warm = decline = negative. Consumption via individual .module.scss composes.
+:root {
+  --color-up: #{$color-primary-light};
+  --color-down: #{$color-accent-warm};
+}

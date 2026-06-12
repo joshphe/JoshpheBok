@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import { usePolling } from '@/hooks/usePolling';
 import {
   fetchAllWeb3Data,
   type FearGreedData,
@@ -20,8 +21,6 @@ export interface Web3State {
   halving: HalvingData | null;
   trending: TrendingCoin[];
 }
-
-const POLL_INTERVAL = 5 * 60 * 1000;
 
 /**
  * A standalone card shell used both inside Web3Dashboard and by the parent grid.
@@ -73,24 +72,10 @@ export default function Web3Dashboard() {
       halving: result.halving,
       trending: result.trending,
     });
-  }, []);
+    if (!mounted) setMounted(true);
+  }, [mounted]);
 
-  useEffect(() => {
-    setMounted(true);
-    let cancelled = false;
-
-    const tick = async () => {
-      if (cancelled) return;
-      await load();
-    };
-
-    tick();
-    const interval = setInterval(tick, POLL_INTERVAL);
-    return () => {
-      cancelled = true;
-      clearInterval(interval);
-    };
-  }, [load]);
+  usePolling(load);
 
   if (!mounted) {
     return (

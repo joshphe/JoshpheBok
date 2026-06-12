@@ -1,20 +1,12 @@
 @use '../variables' as *;
+@use '../mixins' as *;
 
 // ── Card base (used as grid children, no outer wrapper) ──
 
 .card {
-  background: var(--color-surface);
-  border-radius: $radius-sm;
-  border: 1px solid var(--color-border);
-  padding: $spacing-xs $spacing-sm;
-  transition: box-shadow $transition-gentle, border-color $transition-gentle;
+  @include card-compact;
   display: flex;
   flex-direction: column;
-
-  &:hover {
-    box-shadow: $shadow-card;
-    border-color: var(--color-primary-light);
-  }
 }
 
 // ── Card header ──

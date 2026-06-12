@@ -1,4 +1,5 @@
 @use '../variables' as *;
+@use '../mixins' as *;
 
 // ── CardNav: glass top bar → expanding card menu ──
 
@@ -25,11 +26,7 @@
   overflow: hidden;
   will-change: height;
 
-  // Glass morphism — works on any background
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  @include glass-surface(0.1, 20px, 0.22);
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -144,7 +141,6 @@
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   overflow: hidden;
 
-  // Subtle inner gradient for depth
   &::before {
     content: '';
     position: absolute;
@@ -229,7 +225,3 @@
 
   .cardArrow { display: none; }
 }
-
-// ── Non-homepage pages (no hero image) ──
-// When body background is light, the glass bubble needs more presence.
-// The backdrop-filter + border already handle this adaptively.

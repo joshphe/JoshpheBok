@@ -3,15 +3,15 @@
 import dynamic from 'next/dynamic';
 import PageGuard from '@/components/auth/PageGuard';
 
-const AssetDashboard = dynamic(
-  () => import('@/components/dashboard/AssetDashboard'),
+const PortfolioPage = dynamic(
+  () => import('@/components/portfolio/PortfolioPage'),
   { ssr: false },
 );
 
 export default function ArchivesPage() {
   return (
     <PageGuard>
-      <AssetDashboard />
+      <PortfolioPage />
     </PageGuard>
   );
 }

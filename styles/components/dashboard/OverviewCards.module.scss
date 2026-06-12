@@ -48,26 +48,16 @@
   color: var(--color-text);
   line-height: 1.2;
 
-  &.positive {
-    color: var(--color-primary-light);
-  }
-
-  &.negative {
-    color: var(--color-accent-warm);
-  }
+  &.positive { color: var(--color-up); }
+  &.negative { color: var(--color-down); }
 }
 
 .subtext {
   font-size: 0.75rem;
   color: var(--color-text-secondary);
 
-  &.positive {
-    color: var(--color-primary-light);
-  }
-
-  &.negative {
-    color: var(--color-accent-warm);
-  }
+  &.positive { color: var(--color-up); }
+  &.negative { color: var(--color-down); }
 }
 
 // ── Skeleton loading ──
@@ -81,32 +71,21 @@
 }
 
 .skelLabel {
+  @include skeleton-shimmer;
   width: 60%;
   height: 14px;
-  background: var(--color-border);
-  border-radius: 4px;
-  animation: pulse 1.5s ease-in-out infinite;
 }
 
 .skelValue {
+  @include skeleton-shimmer;
   width: 80%;
   height: 28px;
-  background: var(--color-border);
-  border-radius: 4px;
-  animation: pulse 1.5s ease-in-out infinite;
   animation-delay: 0.15s;
 }
 
 .skelSub {
+  @include skeleton-shimmer;
   width: 45%;
   height: 12px;
-  background: var(--color-border);
-  border-radius: 4px;
-  animation: pulse 1.5s ease-in-out infinite;
   animation-delay: 0.3s;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.7; }
 }

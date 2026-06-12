@@ -1,4 +1,5 @@
 @use '../variables' as *;
+@use '../mixins' as *;
 
 .strip {
   position: sticky;
@@ -44,9 +45,7 @@
 }
 
 .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+  @include status-dot;
   flex-shrink: 0;
 }
 
@@ -68,8 +67,8 @@
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--ticker-text-dim);
-  &.up   { color: var(--color-primary-light); }
-  &.down { color: var(--color-accent-warm); }
+  &.up   { color: var(--color-up); }
+  &.down { color: var(--color-down); }
 }
 
 // ── Placeholder ──

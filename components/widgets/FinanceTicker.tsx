@@ -1,6 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
+import { usePolling } from '@/hooks/usePolling';
+import { fetchCrypto } from '@/lib/api/market-crypto';
+import { fetchJson } from '@/lib/api/fetcher';
 import styles from '@/styles/components/FinanceTicker.module.scss';
 
 interface TickerItem {
@@ -27,56 +30,32 @@ function fmtChange(c: number | null): string {
   return `${c > 0 ? '+' : ''}${c.toFixed(2)}%`;
 }
 
-// ── Direct fetch with timeouts ──
+// ── US Stock fetch (individual tickers via Eastmoney) ──
 
-const FETCH_TIMEOUT = 8000; // 8s per request
-
-async function fetchWithTimeout(url: string): Promise<Response> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
-  try {
-    return await fetch(url, { signal: controller.signal });
-  } finally {
-    clearTimeout(timer);
-  }
+interface StockApiResponse {
+  data?: {
+    f43?: number;   // price * 1000
+    f57?: string;   // code
+    f170?: number;  // changePercent * 100
+  };
 }
 
-async function fetchCrypto(): Promise<TickerItem[]> {
-  try {
-    const res = await fetchWithTimeout('https://api.binance.com/api/v3/ticker/24hr?symbols=%5B%22BTCUSDT%22%2C%22ETHUSDT%22%2C%22BNBUSDT%22%5D');
-    if (!res.ok) throw new Error(`Binance ${res.status}`);
-    const data = await res.json();
-    const names: Record<string, string> = { BTCUSDT: 'BTC', ETHUSDT: 'ETH', BNBUSDT: 'BNB' };
-    return data.map((t: { symbol: string; lastPrice: string; priceChangePercent: string }) => ({
-      symbol: names[t.symbol] ?? t.symbol,
-      name: names[t.symbol] ?? t.symbol,
-      price: parseFloat(t.lastPrice),
-      changePercent: parseFloat(t.priceChangePercent),
-    }));
-  } catch (err) {
-    console.warn('[FinanceTicker] Crypto fetch failed:', err instanceof Error ? err.message : err);
-    return [];
-  }
-}
+const STOCK_SYMBOLS = [
+  { sym: 'NVDA', secid: '105.NVDA', name: 'NVIDIA' },
+  { sym: 'AAPL', secid: '105.AAPL', name: 'Apple' },
+  { sym: 'GOOGL', secid: '105.GOOGL', name: 'Alphabet' },
+];
 
 async function fetchStocks(): Promise<TickerItem[]> {
-  const symbols = [
-    { sym: 'NVDA', secid: '105.NVDA', name: 'NVIDIA' },
-    { sym: 'AAPL', secid: '105.AAPL', name: 'Apple' },
-    { sym: 'GOOGL', secid: '105.GOOGL', name: 'Alphabet' },
-  ];
   const results: TickerItem[] = [];
-  for (const s of symbols) {
+  for (const s of STOCK_SYMBOLS) {
     try {
-      const res = await fetchWithTimeout(`https://push2.eastmoney.com/api/qt/stock/get?secid=${s.secid}&fields=f43,f57,f170`);
-      if (!res.ok) {
-        console.warn(`[FinanceTicker] ${s.sym} HTTP ${res.status}`);
-        continue;
-      }
-      const json = await res.json();
+      const json = await fetchJson<StockApiResponse>(
+        `https://push2.eastmoney.com/api/qt/stock/get?secid=${s.secid}&fields=f43,f57,f170`,
+      );
       const d = json?.data;
       if (!d || d.f43 == null) {
-        console.warn(`[FinanceTicker] ${s.sym} missing data`);
+        console.warn(`[Ticker] ${s.sym} missing data`);
         continue;
       }
       results.push({
@@ -86,7 +65,7 @@ async function fetchStocks(): Promise<TickerItem[]> {
         changePercent: d.f170 != null ? d.f170 / 100 : null,
       });
     } catch (err) {
-      console.warn(`[FinanceTicker] ${s.sym} fetch failed:`, err instanceof Error ? err.message : err);
+      console.warn(`[Ticker] ${s.sym} fetch failed:`, err instanceof Error ? err.message : err);
     }
   }
   return results;
@@ -97,34 +76,18 @@ async function fetchStocks(): Promise<TickerItem[]> {
 export default function FinanceTicker() {
   const [items, setItems] = useState<TickerItem[]>([]);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function fetchAll() {
-      console.log('[FinanceTicker] fetching...');
-      const settled = await Promise.allSettled([fetchCrypto(), fetchStocks()]);
-      if (cancelled) return;
-      let all: TickerItem[] = [];
-      for (const r of settled) {
-        if (r.status === 'fulfilled') all = all.concat(r.value);
-      }
-      console.log('[FinanceTicker] got data:', all.length, 'items (crypto:', settled[0].status, 'stocks:', settled[1].status, ')');
-      if (all.length > 0) setItems(all);
+  const load = useCallback(async () => {
+    const settled = await Promise.allSettled([fetchCrypto(), fetchStocks()]);
+    let all: TickerItem[] = [];
+    for (const r of settled) {
+      if (r.status === 'fulfilled') all = all.concat(r.value);
     }
-
-    // Initial fetch
-    fetchAll();
-
-    // Poll every 5 minutes
-    const interval = setInterval(fetchAll, 5 * 60 * 1000);
-
-    return () => {
-      cancelled = true;
-      clearInterval(interval);
-    };
+    if (all.length > 0) setItems(all);
   }, []);
 
-  // Duplicate for marquee
+  usePolling(load);
+
+  // Duplicate for seamless marquee
   const doubled = [...items, ...items];
 
   return (

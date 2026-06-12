@@ -1,0 +1,821 @@
+@use '../../variables' as *;
+@use '../../mixins' as *;
+
+// ── Page layout ──
+
+.page {
+  min-height: calc(100vh - 68px);
+  padding: $spacing-lg 0 $spacing-2xl;
+}
+
+.container {
+  @include container;
+}
+
+// ── Header ──
+
+.header {
+  text-align: center;
+  margin-bottom: $spacing-2xl;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: $spacing-sm;
+  letter-spacing: 0.03em;
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  font-size: $font-size-lg;
+
+  strong {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+}
+
+.errorBanner {
+  font-size: 0.8rem;
+  color: var(--color-accent-warm);
+  margin-top: $spacing-xs;
+}
+
+.retryLink {
+  background: none;
+  border: none;
+  color: var(--color-primary-light);
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.8rem;
+  margin-left: 4px;
+}
+
+// ── Summary cards ──
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+
+  @media (max-width: ($bp-md - 1)) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.summaryCard {
+  @include card-organic;
+  padding: $spacing-md $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &:hover {
+    transform: none;
+  }
+}
+
+.summaryLabel {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.summaryValue {
+  font-family: var(--font-sans);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.summaryPercent {
+  font-size: 0.85rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.up   { color: var(--color-up); }
+.down { color: var(--color-down); }
+
+// ── Add button bar ──
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-lg;
+
+  @media (max-width: ($bp-sm - 1)) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.filters {
+  display: flex;
+  gap: 4px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-sm;
+  padding: 2px;
+}
+
+.filterBtn {
+  padding: 0.35rem 0.9rem;
+  border-radius: $radius-xs;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-gentle;
+
+  &:hover {
+    color: var(--color-text);
+  }
+}
+
+.filterActive {
+  background: var(--color-primary);
+  color: #fff;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.addBtns {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.addBtn {
+  @include btn-primary;
+  font-size: 0.85rem;
+}
+
+// ── Holding cards ──
+
+.section {
+  margin-bottom: $spacing-lg;
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: $spacing-md;
+  display: flex;
+  align-items: baseline;
+  gap: $spacing-sm;
+}
+
+.sectionCount {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.holdingGrid {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.holdingCard {
+  @include card-organic;
+  padding: $spacing-md $spacing-lg;
+  margin-bottom: $spacing-sm;
+
+  &:hover {
+    transform: none;
+  }
+}
+
+.clickable {
+  cursor: pointer;
+  transition: all $transition-gentle;
+
+  &:hover {
+    border-color: var(--color-primary-light);
+    transform: translateY(-1px);
+    box-shadow: $shadow-hover;
+  }
+}
+
+.closedCard {
+  opacity: 0.65;
+  padding: $spacing-sm $spacing-lg;
+  margin-bottom: $spacing-xs;
+}
+
+.holdingHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+  padding-bottom: $spacing-xs;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.holdingSymbol {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.holdingIcon {
+  font-size: 1.1rem;
+}
+
+.holdingName {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.holdingFullName {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-left: 4px;
+}
+
+.closedTag {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: $radius-full;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.holdingHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.detailHint {
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  .clickable:hover & {
+    opacity: 1;
+  }
+}
+
+.holdingBody {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: $spacing-sm;
+}
+
+.holdingStat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.holdingStatLabel {
+  font-size: 0.65rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.holdingStatValue {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pnlPercent {
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+// ── Closed positions ──
+
+.closedSection {
+  margin-top: $spacing-sm;
+}
+
+.closedSummary {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: $spacing-xs 0;
+  user-select: none;
+
+  &:hover {
+    color: var(--color-text);
+  }
+}
+
+// ── Empty state ──
+
+.empty {
+  text-align: center;
+  padding: $spacing-xl;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.emptySub {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+// ── Transaction table ──
+
+.tableWrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+
+  th {
+    text-align: left;
+    padding: $spacing-xs $spacing-sm;
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  td {
+    padding: $spacing-xs $spacing-sm;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+
+  tbody tr:hover {
+    background: rgba(0, 0, 0, 0.02);
+  }
+}
+
+.tdDate     { font-variant-numeric: tabular-nums; }
+.tdSymbol   { font-family: var(--font-mono); font-weight: 600; }
+.tdName     { max-width: 120px; overflow: hidden; text-overflow: ellipsis; color: var(--color-text-secondary); }
+.tdNum      { font-family: var(--font-sans); font-variant-numeric: tabular-nums; text-align: right; }
+.tdActions  { display: flex; gap: 2px; }
+
+.txBadge {
+  display: inline-block;
+  font-size: 0.72rem;
+  padding: 1px 8px;
+  border-radius: $radius-full;
+  font-weight: 600;
+}
+
+.buyBadge {
+  background: rgba(74, 124, 89, 0.15);
+  color: var(--color-primary);
+}
+
+.sellBadge {
+  background: rgba(220, 80, 60, 0.12);
+  color: #dc503c;
+}
+
+.actionBtn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: $radius-xs;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 2px 4px;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: var(--color-bg);
+    border-color: var(--color-border);
+  }
+}
+
+.dangerBtn {
+  color: #dc503c;
+
+  &:hover {
+    border-color: rgba(220, 80, 60, 0.3);
+  }
+}
+
+// ── Modal ──
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md;
+}
+
+.modal {
+  @include card-organic;
+  width: min(520px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: $spacing-lg;
+  animation: modalIn 0.25s ease;
+
+  &:hover {
+    transform: none;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.modalTitle {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.modalClose {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: $radius-xs;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+// ── Asset type selector (in modal) ──
+
+.assetTypeRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.assetTypeToggle {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.assetTypeBtn {
+  flex: 1;
+  padding: 0.55rem;
+  border-radius: $radius-sm;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-gentle;
+
+  &:hover {
+    border-color: var(--color-primary-light);
+  }
+}
+
+.assetTypeActive {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+  &:hover { background: var(--color-primary); }
+}
+
+// ── Buy/Sell toggle ──
+
+.txTypeToggle {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.txTypeBtn {
+  flex: 1;
+  padding: 0.6rem;
+  border-radius: $radius-sm;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-gentle;
+
+  &:hover {
+    border-color: var(--color-primary-light);
+  }
+}
+
+.txTypeActive {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+
+  &:hover {
+    background: var(--color-primary);
+  }
+}
+
+// ── Form fields ──
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-sm;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.formLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.formInput {
+  width: 100%;
+  padding: $spacing-xs $spacing-sm;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-sm;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color $transition-gentle;
+
+  &::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 0.5;
+  }
+
+  &:focus {
+    border-color: var(--color-primary-light);
+  }
+}
+
+.formError {
+  font-size: 0.8rem;
+  color: #dc503c;
+}
+
+// ── Symbol search suggestions ──
+
+.symbolSearchWrap {
+  position: relative;
+}
+
+.searchSpinner {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  pointer-events: none;
+}
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-sm;
+  margin-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.suggestionItem {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-xs $spacing-sm;
+  cursor: pointer;
+  transition: background 0.1s ease;
+
+  &:hover,
+  &.suggestionActive {
+    background: var(--color-bg);
+  }
+}
+
+.suggestionSymbol {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text);
+  min-width: 60px;
+}
+
+.suggestionName {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ── Modal actions ──
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-sm;
+  margin-top: $spacing-xs;
+}
+
+.saveBtn {
+  @include btn-primary;
+}
+
+.cancelBtn {
+  @include btn-secondary;
+}
+
+// ── Detail modal (per-symbol transactions) ──
+
+.detailModal {
+  @include card-organic;
+  width: min(680px, 95vw);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: $spacing-lg;
+  animation: modalIn 0.25s ease;
+
+  &:hover {
+    transform: none;
+  }
+}
+
+.detailName {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.detailSummary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $spacing-sm;
+  padding: $spacing-sm 0;
+  margin-bottom: $spacing-md;
+  border-bottom: 1px solid var(--color-border);
+
+  @media (max-width: ($bp-sm - 1)) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.detailSummaryItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detailSummaryLabel {
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.detailSummaryVal {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.detailTableWrap {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.detailEmpty {
+  text-align: center;
+  padding: $spacing-lg;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.tdNote {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+}
+
+// ── Skeleton ──
+
+.skeleton {
+  pointer-events: none;
+}
+
+.skelLine {
+  height: 1rem;
+  border-radius: 6px;
+  @include skeleton-shimmer;
+  margin-bottom: 6px;
+}
+
+.skelShort {
+  width: 60%;
+}
+
+.tableSkelRow {
+  padding: $spacing-sm $spacing-xs;
+  border-bottom: 1px solid var(--color-border);
+
+  .skelLine {
+    height: 0.85rem;
+  }
+}
+
+// ── Animations ──
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeSlideIn 0.5s $transition-natural forwards;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
