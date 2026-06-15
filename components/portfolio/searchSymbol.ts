@@ -185,7 +185,6 @@ const US_STOCKS: SearchResult[] = [
   { symbol: 'W', name: 'Wayfair Inc.' },
   { symbol: 'CHWY', name: 'Chewy Inc.' },
   { symbol: 'ROKU', name: 'Roku Inc.' },
-  { symbol: 'DDOG', name: 'Datadog Inc.' },
   { symbol: 'MSTR', name: 'MicroStrategy Incorporated' },
   { symbol: 'MARA', name: 'Marathon Digital Holdings' },
   { symbol: 'RIOT', name: 'Riot Platforms Inc.' },

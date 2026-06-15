@@ -14,7 +14,7 @@ export const SITE = {
 export const NAV = [
   { label: '首页', href: '/', icon: 'home' },
   { label: '目录', href: '/tags', icon: 'list' },
-  { label: '归档', href: '/archives', icon: 'archive' },
+  { label: '组合', href: '/portfolio', icon: 'chart' },
   { label: '关于', href: '/about', icon: 'user' },
 ] as const;
 
@@ -24,7 +24,5 @@ export const PROFILE = {
   intro: 'If you wish to succeed, you should use persistence as your good friend, experience as your reference, prudence as your brother and hope as your sentry.',
 } as const;
 
-export const PER_PAGE = 6;
-
 /** Routes that require blogger role */
-export const RESTRICTED_ROUTES = ['/archives'] as const;
+export const RESTRICTED_ROUTES = ['/portfolio'] as const;

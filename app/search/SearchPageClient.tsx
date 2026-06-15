@@ -8,16 +8,17 @@ import styles from './page.module.scss';
 
 let fuseInstance: Fuse<Post> | null = null;
 
-async function initFuse(): Promise<Fuse<Post>> {
-  if (fuseInstance) return fuseInstance;
+async function initFuse(): Promise<{ fuse: Fuse<Post>; posts: Post[] }> {
   const res = await fetch('/search-data.json');
   const posts: Post[] = await res.json();
-  fuseInstance = new Fuse(posts, {
-    keys: ['title', 'summary', 'tags', 'categories', 'rawContent'],
-    threshold: 0.4,
-    includeScore: true,
-  });
-  return fuseInstance;
+  if (!fuseInstance) {
+    fuseInstance = new Fuse(posts, {
+      keys: ['title', 'summary', 'tags', 'categories', 'rawContent'],
+      threshold: 0.4,
+      includeScore: true,
+    });
+  }
+  return { fuse: fuseInstance, posts };
 }
 
 export default function SearchPageClient() {
@@ -27,11 +28,10 @@ export default function SearchPageClient() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    initFuse().then(() => setLoading(false));
-    // Also load all posts for empty state
-    fetch('/search-data.json')
-      .then((r) => r.json())
-      .then(setAllPosts);
+    initFuse().then(({ posts }) => {
+      setAllPosts(posts);
+      setLoading(false);
+    });
   }, []);
 
   useEffect(() => {
@@ -42,6 +42,8 @@ export default function SearchPageClient() {
     const res = fuseInstance.search(query.trim());
     setResults(res.map((r) => r.item));
   }, [query]);
+
+  if (loading) return null;
 
   return (
     <div>

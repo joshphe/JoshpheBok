@@ -76,7 +76,7 @@ async function fetchStocks(): Promise<TickerItem[]> {
 export default function FinanceTicker() {
   const [items, setItems] = useState<TickerItem[]>([]);
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (_signal: AbortSignal) => {
     const settled = await Promise.allSettled([fetchCrypto(), fetchStocks()]);
     let all: TickerItem[] = [];
     for (const r of settled) {

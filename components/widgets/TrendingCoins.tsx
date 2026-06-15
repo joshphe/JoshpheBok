@@ -3,10 +3,11 @@
 import type { TrendingCoin } from '@/lib/market-data';
 import styles from '@/styles/components/TrendingCoins.module.scss';
 
-function fmtBtcPrice(btc: number | null): string {
-  if (btc == null) return '—';
-  if (btc < 1e-6) return btc.toExponential(2);
-  return btc.toFixed(8);
+function fmtUsd(value: number): string {
+  if (value >= 1) return `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  if (value >= 0.01) return `$${value.toFixed(4)}`;
+  if (value >= 0.0001) return `$${value.toFixed(6)}`;
+  return `$${value.toFixed(8)}`;
 }
 
 export default function TrendingCoins({ coins }: { coins: TrendingCoin[] }) {
@@ -34,7 +35,7 @@ export default function TrendingCoins({ coins }: { coins: TrendingCoin[] }) {
             <span className={styles.name}>{coin.name}</span>
           </div>
           <span className={styles.price}>
-            {fmtBtcPrice(coin.priceBtc)} BTC
+            {coin.priceUsd != null ? fmtUsd(coin.priceUsd) : '—'}
           </span>
         </div>
       ))}

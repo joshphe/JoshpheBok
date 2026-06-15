@@ -3,10 +3,9 @@
 import { useState, useEffect } from 'react';
 import { SITE } from '@/lib/constants';
 import { pickRandom } from '@/lib/utils';
-import { getSupabase } from '@/lib/supabase';
+import { useSupabaseAuth } from '@/hooks/useSupabaseAuth';
 import styles from '@/styles/components/AuthGuard.module.scss';
 
-// All available background images
 const BG_IMAGES = [
   '/images/background/bg-1.jpg',
   '/images/background/bg-2.jpg',
@@ -16,6 +15,8 @@ const BG_IMAGES = [
 const AUTH_KEY = 'mybok_auth';
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
+  const { user, isLoading: authLoading, signIn } = useSupabaseAuth();
+
   const [state, setState] = useState<'loading' | 'locked' | 'unlocked'>('loading');
   const [bg, setBg] = useState<string | null>(null);
   const [bgLoaded, setBgLoaded] = useState(false);
@@ -25,31 +26,33 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Pick random background on mount
   useEffect(() => {
     setBg(pickRandom(BG_IMAGES));
+  }, []);
 
-    // Check existing auth: sessionStorage first, then Supabase session
+  // Determine auth state from sessionStorage + Supabase session
+  useEffect(() => {
+    // 1. Check sessionStorage first (instant)
     const saved = sessionStorage.getItem(AUTH_KEY);
     if (saved === 'guest' || saved === 'blogger') {
       setState('unlocked');
       return;
     }
 
-    // Check Supabase session (survives tab close via cookie)
-    const client = getSupabase();
-    if (client) {
-      client.auth.getSession().then(({ data: { session } }) => {
-        if (session?.user) {
-          sessionStorage.setItem(AUTH_KEY, 'blogger');
-          setState('unlocked');
-        } else {
-          setState('locked');
-        }
-      });
-    } else {
-      setState('locked');
+    // 2. Wait for Supabase session check
+    if (authLoading) return;
+
+    // 3. Supabase session exists → blogger
+    if (user) {
+      sessionStorage.setItem(AUTH_KEY, 'blogger');
+      setState('unlocked');
+      return;
     }
-  }, []);
+
+    // 4. No session → locked
+    setState('locked');
+  }, [authLoading, user]);
 
   const enterAsGuest = () => {
     sessionStorage.setItem(AUTH_KEY, 'guest');
@@ -63,22 +66,10 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     setIsSubmitting(true);
     setError('');
 
-    const client = getSupabase();
-    if (!client) {
-      setError('Supabase 未配置，请联系管理员');
-      setIsSubmitting(false);
-      return;
-    }
-
-    const { error: signInError } = await client.auth.signInWithPassword({
-      email: email.trim(),
-      password,
-    });
+    const { error: signInError } = await signIn(email.trim(), password);
 
     if (signInError) {
-      setError(signInError.message === 'Invalid login credentials'
-        ? '邮箱或密码错误'
-        : signInError.message);
+      setError(signInError);
       setIsSubmitting(false);
       return;
     }
@@ -96,7 +87,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   // Locked — full-screen login overlay
   return (
     <div className={`${styles.overlay} ${bgLoaded ? styles.ready : ''}`}>
-      {/* Background image */}
       {bg && (
         <img
           src={bg}
@@ -107,10 +97,8 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         />
       )}
 
-      {/* Darkening layer */}
       <div className={styles.darken} />
 
-      {/* Login card */}
       <div className={styles.card}>
         <h1 className={styles.logo}>{SITE.title}</h1>
         <p className={styles.desc}>{SITE.subtitle}</p>
@@ -159,7 +147,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         )}
       </div>
 
-      {/* Footer hint */}
       <p className={styles.hint}>Supabase 账号登录 · 关闭标签页后需重新验证</p>
     </div>
   );

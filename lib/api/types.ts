@@ -1,32 +1,5 @@
 // ── Shared API Types ──
 
-// ── Chain / Wallet ──
-
-export interface TokenBalance {
-  symbol: string;
-  name: string;
-  contractAddress: string;
-  balance: number;
-  decimals: number;
-  price: number | null;
-  change24hPercent: number | null;
-}
-
-export interface ChainBalance {
-  chain: 'eth' | 'bnb' | 'sol';
-  nativeBalance: number;
-  nativePrice: number | null;
-  nativeChange24h: number | null;
-  tokens: TokenBalance[];
-  error?: string;
-}
-
-export interface WalletConfig {
-  eth: string;
-  bnb: string;
-  sol: string;
-}
-
 // ── Market Data ──
 
 export interface IndexItem {
@@ -77,6 +50,7 @@ export interface TrendingCoin {
   name: string;
   marketCapRank: number | null;
   priceBtc: number | null;
+  priceUsd: number | null;
   thumb: string;
 }
 

@@ -11,7 +11,7 @@
 
 // ── Card header ──
 .cardHeader {
-  font-family: var(--font-heading);
+  font-family: var(--font-sans);
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--color-text-secondary);
@@ -44,12 +44,3 @@
   font-style: italic;
 }
 
-// ── Trending spans full width on desktop ──
-.span3 {
-  @media (min-width: $bp-lg) {
-    grid-column: 1 / -1;
-    max-width: 66%;
-    justify-self: center;
-    width: 100%;
-  }
-}

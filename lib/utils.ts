@@ -57,15 +57,3 @@ export function formatPercent(value: number): string {
   const sign = value >= 0 ? '+' : '';
   return sign + value.toFixed(2) + '%';
 }
-
-/** Group posts by year and month for archives */
-export function groupByYearMonth<T extends { date: string }>(posts: T[]): [string, T[]][] {
-  const map = new Map<string, T[]>();
-  for (const post of posts) {
-    const d = new Date(post.date);
-    const key = `${d.getFullYear()}年${d.getMonth() + 1}月`;
-    if (!map.has(key)) map.set(key, []);
-    map.get(key)!.push(post);
-  }
-  return Array.from(map.entries());
-}

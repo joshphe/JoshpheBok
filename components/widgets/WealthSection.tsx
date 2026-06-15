@@ -7,12 +7,13 @@ import { fetchAllMarketData } from '@/lib/market-data';
 import MarketCard from './MarketCard';
 import FinanceTicker from './FinanceTicker';
 import Web3Dashboard from './Web3Dashboard';
+import TrendingTicker from './TrendingTicker';
 import styles from '@/styles/components/WealthSection.module.scss';
 
 export default function WealthSection() {
   const [data, setData] = useState<MarketData | null>(null);
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (_signal: AbortSignal) => {
     const result = await fetchAllMarketData();
     setData(result);
   }, []);
@@ -48,6 +49,9 @@ export default function WealthSection() {
           />
 
           <Web3Dashboard />
+        </div>
+        <div className={styles.trendingWrap}>
+          <TrendingTicker />
         </div>
       </div>
     </section>

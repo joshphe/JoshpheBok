@@ -54,7 +54,7 @@ export default function PortfolioPage() {
 
   const [marketPrices, setMarketPrices] = useState<Record<string, number>>({});
 
-  const fetchPrices = useCallback(async () => {
+  const fetchPrices = useCallback(async (_signal: AbortSignal) => {
     try {
       const stockSymbols = stockStore.holdings.filter((h) => h.totalQuantity > 0).map((h) => h.symbol);
       const cryptoSymbols = cryptoStore.holdings.filter((h) => h.totalQuantity > 0).map((h) => h.symbol);
@@ -73,7 +73,12 @@ export default function PortfolioPage() {
     ...cryptoStore.holdings.filter((h) => h.totalQuantity > 0).map((h) => h.symbol).sort(),
   ].join(','), [stockStore.holdings, cryptoStore.holdings]);
 
-  useEffect(() => { fetchPrices(); }, [holdingsKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Re-fetch prices when holdings change (new/edited/deleted transaction)
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchPrices(controller.signal);
+    return () => controller.abort();
+  }, [holdingsKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Merge prices into FILTERED holdings
   const holdingsWithPrices = useMemo(() => filteredHoldings.map((h) => {

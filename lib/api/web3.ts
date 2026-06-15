@@ -113,14 +113,37 @@ export async function fetchTrendingCoins(): Promise<TrendingCoin[]> {
     const json = await fetchJson<TrendingResponse>('https://api.coingecko.com/api/v3/search/trending');
     const coins = json?.coins;
     if (!Array.isArray(coins)) return [];
-    return coins.slice(0, 4).map((c) => ({
+    const trending = coins.slice(0, 4).map((c) => ({
       id: c.item.id ?? '',
       symbol: (c.item.symbol ?? '').toUpperCase(),
       name: c.item.name ?? '',
       marketCapRank: c.item.market_cap_rank != null ? Number(c.item.market_cap_rank) : null,
       priceBtc: c.item.price_btc != null ? Number(c.item.price_btc) : null,
+      priceUsd: null as number | null,
       thumb: c.item.thumb ?? '',
     }));
+
+    // Batch-fetch USD prices for all trending coins
+    const ids = trending.map((c) => c.id).filter(Boolean).join(',');
+    if (ids) {
+      try {
+        const priceJson = await fetchJson<Record<string, { usd?: number }>>(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${encodeURIComponent(ids)}&vs_currencies=usd`,
+        );
+        if (priceJson) {
+          for (const coin of trending) {
+            const price = priceJson[coin.id];
+            if (price?.usd != null) {
+              coin.priceUsd = price.usd;
+            }
+          }
+        }
+      } catch {
+        // USD prices are optional enhancement; don't fail the whole fetch
+      }
+    }
+
+    return trending;
   } catch (err) {
     console.warn('[Web3Data] Trending fetch failed:', err instanceof Error ? err.message : err);
     return [];
