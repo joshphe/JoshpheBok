@@ -13,11 +13,13 @@ interface Suggestion {
 interface Props {
   assetType?: 'stock' | 'crypto';
   editTransaction?: Transaction | null;
+  /** Pre-fill symbol/name/assetType when adding a transaction for a specific asset */
+  prefill?: { assetType?: 'stock' | 'crypto'; symbol?: string; name?: string } | null;
   onSave: (input: TransactionInput) => Promise<void>;
   onClose: () => void;
 }
 
-export default function AddTransactionModal({ assetType: initialType, editTransaction, onSave, onClose }: Props) {
+export default function AddTransactionModal({ assetType: initialType, editTransaction, prefill, onSave, onClose }: Props) {
   const [assetType, setAssetType] = useState<'stock' | 'crypto'>(initialType ?? 'stock');
   const [symbol, setSymbol] = useState('');
   const [name, setName] = useState('');
@@ -25,6 +27,8 @@ export default function AddTransactionModal({ assetType: initialType, editTransa
   const [txDate, setTxDate] = useState(new Date().toISOString().slice(0, 10));
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
+  const [quantityMode, setQuantityMode] = useState<'qty' | 'total'>('qty');
+  const [totalPrice, setTotalPrice] = useState('');
   const [fee, setFee] = useState('0');
   const [notes, setNotes] = useState('');
   const [isSaving, setIsSaving] = useState(false);
@@ -53,6 +57,16 @@ export default function AddTransactionModal({ assetType: initialType, editTransa
       setNotes(editTransaction.notes);
     }
   }, [editTransaction]);
+
+  // Pre-fill symbol/name/assetType when adding from detail modal
+  useEffect(() => {
+    if (editTransaction) return; // edit mode takes precedence
+    if (prefill) {
+      if (prefill.assetType) setAssetType(prefill.assetType);
+      if (prefill.symbol) setSymbol(prefill.symbol);
+      if (prefill.name) setName(prefill.name);
+    }
+  }, [prefill, editTransaction]);
 
   // Reset search when asset type changes (unless editing)
   useEffect(() => {
@@ -138,6 +152,18 @@ export default function AddTransactionModal({ assetType: initialType, editTransa
     catch (err) { setError(err instanceof Error ? err.message : '保存失败'); }
     finally { setIsSaving(false); }
   };
+
+  // When in "total price" mode, auto-calculate quantity from totalPrice / price
+  useEffect(() => {
+    if (quantityMode !== 'total') return;
+    const priceNum = parseFloat(price);
+    const totalNum = parseFloat(totalPrice);
+    if (!isNaN(priceNum) && priceNum > 0 && !isNaN(totalNum) && totalNum > 0) {
+      setQuantity((totalNum / priceNum).toFixed(8));
+    } else {
+      setQuantity('');
+    }
+  }, [quantityMode, price, totalPrice]);
 
   const qtyUnit = assetType === 'stock' ? '股' : '个';
 
@@ -229,9 +255,39 @@ export default function AddTransactionModal({ assetType: initialType, editTransa
                 onChange={(e) => setPrice(e.target.value)} placeholder="150.00" />
             </div>
             <div className={styles.formField}>
-              <label className={styles.formLabel}>数量 * ({qtyUnit})</label>
-              <input type="number" step="any" className={styles.formInput} value={quantity}
-                onChange={(e) => setQuantity(e.target.value)} placeholder="10" />
+              <label className={styles.formLabel}>
+                {quantityMode === 'qty' ? `数量 * (${qtyUnit})` : '购买总价 *'}
+                <span className={styles.qtyModeToggle}>
+                  <button
+                    type="button"
+                    className={`${styles.qtyModeBtn} ${quantityMode === 'qty' ? styles.qtyModeActive : ''}`}
+                    onClick={() => { setQuantityMode('qty'); setTotalPrice(''); }}
+                  >
+                    数量
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles.qtyModeBtn} ${quantityMode === 'total' ? styles.qtyModeActive : ''}`}
+                    onClick={() => { setQuantityMode('total'); setQuantity(''); }}
+                  >
+                    总价
+                  </button>
+                </span>
+              </label>
+              {quantityMode === 'qty' ? (
+                <input type="number" step="any" className={styles.formInput} value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)} placeholder="10" />
+              ) : (
+                <>
+                  <input type="number" step="any" className={styles.formInput} value={totalPrice}
+                    onChange={(e) => setTotalPrice(e.target.value)} placeholder="1500.00" />
+                  {quantity && parseFloat(quantity) > 0 && (
+                    <span className={styles.qtyHint}>
+                      ≈ {parseFloat(quantity).toLocaleString(undefined, { maximumFractionDigits: 8 })} {qtyUnit}
+                    </span>
+                  )}
+                </>
+              )}
             </div>
           </div>
 

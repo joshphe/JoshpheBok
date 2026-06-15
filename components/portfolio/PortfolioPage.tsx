@@ -18,7 +18,9 @@ export default function PortfolioPage() {
   const [filter, setFilter] = useState<FilterType>('all');
   const [showModal, setShowModal] = useState(false);
   const [editTransaction, setEditTransaction] = useState<Transaction | null>(null);
+  const [prefill, setPrefill] = useState<{ assetType?: 'stock' | 'crypto'; symbol?: string; name?: string } | null>(null);
   const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
+  const [pendingDetailSymbol, setPendingDetailSymbol] = useState<string | null>(null);
 
   const stockStore = usePortfolioStore('stock');
   const cryptoStore = usePortfolioStore('crypto');
@@ -114,10 +116,27 @@ export default function PortfolioPage() {
 
   const handleAdd = () => {
     setEditTransaction(null);
+    setPrefill(null);
+    setPendingDetailSymbol(null);
+    setShowModal(true);
+  };
+
+  const handleAddFromDetail = () => {
+    // Close detail modal, open add modal pre-filled with this symbol
+    const t = allTransactions.find((tx) => tx.symbol.toUpperCase() === selectedSymbol?.toUpperCase());
+    setPrefill({
+      assetType: t?.asset_type,
+      symbol: selectedSymbol ?? undefined,
+      name: t?.name,
+    });
+    setPendingDetailSymbol(selectedSymbol);
+    setSelectedSymbol(null);
+    setEditTransaction(null);
     setShowModal(true);
   };
 
   const handleEdit = (t: Transaction) => {
+    setPendingDetailSymbol(selectedSymbol);
     setSelectedSymbol(null);
     setEditTransaction(t);
     setShowModal(true);
@@ -221,8 +240,18 @@ export default function PortfolioPage() {
       {showModal && (
         <AddTransactionModal
           editTransaction={editTransaction}
+          prefill={prefill}
           onSave={handleSave}
-          onClose={() => { setShowModal(false); setEditTransaction(null); }}
+          onClose={() => {
+            setShowModal(false);
+            setEditTransaction(null);
+            setPrefill(null);
+            // If we came from a detail modal, return to it
+            if (pendingDetailSymbol) {
+              setSelectedSymbol(pendingDetailSymbol);
+              setPendingDetailSymbol(null);
+            }
+          }}
         />
       )}
 
@@ -231,6 +260,7 @@ export default function PortfolioPage() {
           symbol={selectedSymbol}
           transactions={selectedTransactions}
           onClose={() => setSelectedSymbol(null)}
+          onAdd={handleAddFromDetail}
           onEdit={handleEdit}
           onDelete={handleDelete}
         />

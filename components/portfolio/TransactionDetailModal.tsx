@@ -9,11 +9,12 @@ interface Props {
   symbol: string;
   transactions: Transaction[];
   onClose: () => void;
+  onAdd: () => void;
   onEdit: (t: Transaction) => void;
   onDelete: (id: number) => Promise<void>;
 }
 
-export default function TransactionDetailModal({ symbol, transactions, onClose, onEdit, onDelete }: Props) {
+export default function TransactionDetailModal({ symbol, transactions, onClose, onAdd, onEdit, onDelete }: Props) {
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [confirmId, setConfirmId] = useState<number | null>(null);
 
@@ -47,6 +48,12 @@ export default function TransactionDetailModal({ symbol, transactions, onClose, 
   const realizedPnl = sellQty > 0 ? sellVal - avgCost * sellQty : 0;
 
   const name = transactions[0]?.name || symbol;
+  const isCrypto = transactions[0]?.asset_type === 'crypto';
+
+  function fmtQty(value: number): string {
+    if (isCrypto) return value.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 6 });
+    return value.toLocaleString();
+  }
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -57,14 +64,17 @@ export default function TransactionDetailModal({ symbol, transactions, onClose, 
             {symbol}
             {name !== symbol && <span className={styles.detailName}> — {name}</span>}
           </h3>
-          <button className={styles.modalClose} onClick={onClose}>✕</button>
+          <div className={styles.modalHeaderRight}>
+            <button className={styles.addBtnSmall} onClick={onAdd}>+ 添加交易</button>
+            <button className={styles.modalClose} onClick={onClose}>✕</button>
+          </div>
         </div>
 
         {/* Summary bar */}
         <div className={styles.detailSummary}>
           <div className={styles.detailSummaryItem}>
             <span className={styles.detailSummaryLabel}>持仓</span>
-            <span className={styles.detailSummaryVal}>{holding.toLocaleString(undefined, { maximumFractionDigits: 8 })}</span>
+            <span className={styles.detailSummaryVal}>{fmtQty(holding)}</span>
           </div>
           <div className={styles.detailSummaryItem}>
             <span className={styles.detailSummaryLabel}>均价</span>
@@ -114,7 +124,7 @@ export default function TransactionDetailModal({ symbol, transactions, onClose, 
                         </span>
                       </td>
                       <td className={styles.tdNum}>{formatCurrency(t.price)}</td>
-                      <td className={styles.tdNum}>{t.quantity.toLocaleString()}</td>
+                      <td className={styles.tdNum}>{fmtQty(t.quantity)}</td>
                       <td className={styles.tdNum}>{formatCurrency(t.price * t.quantity)}</td>
                       <td className={styles.tdNum}>{t.fee > 0 ? formatCurrency(t.fee) : '--'}</td>
                       <td className={styles.tdNote}>{t.notes || '--'}</td>
