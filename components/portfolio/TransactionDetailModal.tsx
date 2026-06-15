@@ -119,7 +119,7 @@ export default function TransactionDetailModal({ symbol, transactions, onClose, 
                       <td className={styles.tdNum}>{t.fee > 0 ? formatCurrency(t.fee) : '--'}</td>
                       <td className={styles.tdNote}>{t.notes || '--'}</td>
                       <td className={styles.tdActions}>
-                        <button className={styles.actionBtn} onClick={() => onEdit(t)} title="编辑">✏️</button>
+                        <button className={styles.actionBtn} onClick={() => onEdit(t)} title="编辑">编辑</button>
                         {confirmId === t.id ? (
                           <>
                             <button
@@ -132,7 +132,7 @@ export default function TransactionDetailModal({ symbol, transactions, onClose, 
                             <button className={styles.actionBtn} onClick={() => setConfirmId(null)}>取消</button>
                           </>
                         ) : (
-                          <button className={styles.actionBtn} onClick={() => setConfirmId(t.id)} title="删除">🗑️</button>
+                          <button className={styles.actionBtn} onClick={() => setConfirmId(t.id)} title="删除">删除</button>
                         )}
                       </td>
                     </tr>

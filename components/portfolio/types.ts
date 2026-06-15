@@ -53,7 +53,6 @@ export interface PortfolioSummary {
 export interface PortfolioState {
   transactions: Transaction[];
   holdings: Holding[];
-  summary: PortfolioSummary | null;
   isLoading: boolean;
   error: string | null;
 }

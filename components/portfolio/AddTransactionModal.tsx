@@ -161,22 +161,22 @@ export default function AddTransactionModal({ assetType: initialType, editTransa
                 className={`${styles.assetTypeBtn} ${assetType === 'stock' ? styles.assetTypeActive : ''}`}
                 onClick={() => setAssetType('stock')}
               >
-                🇺🇸 美股
+                美股
               </button>
               <button
                 type="button"
                 className={`${styles.assetTypeBtn} ${assetType === 'crypto' ? styles.assetTypeActive : ''}`}
                 onClick={() => setAssetType('crypto')}
               >
-                🪙 虚拟货币
+                虚拟货币
               </button>
             </div>
           </div>
 
           {/* Buy/Sell toggle */}
           <div className={styles.txTypeToggle}>
-            <button type="button" className={`${styles.txTypeBtn} ${txType === 'buy' ? styles.txTypeActive : ''}`} onClick={() => setTxType('buy')}>🟢 买入</button>
-            <button type="button" className={`${styles.txTypeBtn} ${txType === 'sell' ? styles.txTypeActive : ''}`} onClick={() => setTxType('sell')}>🔴 卖出</button>
+            <button type="button" className={`${styles.txTypeBtn} ${txType === 'buy' ? styles.txTypeActive : ''}`} onClick={() => setTxType('buy')}>买入</button>
+            <button type="button" className={`${styles.txTypeBtn} ${txType === 'sell' ? styles.txTypeActive : ''}`} onClick={() => setTxType('sell')}>卖出</button>
           </div>
 
           <div className={styles.formRow}>
@@ -190,7 +190,7 @@ export default function AddTransactionModal({ assetType: initialType, editTransa
                   placeholder={assetType === 'stock' ? '输入代码搜索，如 AAPL' : '输入代码搜索，如 BTC'}
                   autoComplete="off"
                 />
-                {isSearching && <span className={styles.searchSpinner}>⏳</span>}
+                {isSearching && <span className={styles.searchSpinner} />}
                 {showSuggestions && suggestions.length > 0 && (
                   <ul className={styles.suggestions}>
                     {suggestions.map((s, i) => (

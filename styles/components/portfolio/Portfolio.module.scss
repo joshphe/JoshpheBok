@@ -238,10 +238,6 @@
   gap: $spacing-xs;
 }
 
-.holdingIcon {
-  font-size: 1.1rem;
-}
-
 .holdingName {
   font-family: var(--font-heading);
   font-size: 1.05rem;
@@ -622,8 +618,17 @@
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 0.8rem;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
   pointer-events: none;
+}
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
 }
 
 .suggestions {
@@ -817,5 +822,79 @@
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
+  }
+}
+
+// ── Portfolio Chart ──
+
+.chartCard {
+  @include card-organic;
+  padding: $spacing-sm $spacing-md;
+  margin-bottom: $spacing-md;
+}
+
+.chartEmpty {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  padding: $spacing-md 0;
+  opacity: 0.6;
+}
+
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.chartTitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.03em;
+}
+
+.chartPeriodBar {
+  display: flex;
+  gap: 4px;
+}
+
+.chartPeriodBtn {
+  font-size: 0.65rem;
+  padding: 2px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: $radius-full;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all $transition-gentle;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+}
+
+.chartPeriodActive {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+
+  &:hover {
+    color: #fff;
+    background: var(--color-primary-dark);
+  }
+}
+
+.chartSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+
+  text {
+    font-family: var(--font-sans);
   }
 }

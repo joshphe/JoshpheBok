@@ -4,8 +4,9 @@ import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { usePortfolioStore } from './usePortfolioStore';
 import { usePolling } from '@/hooks/usePolling';
 import { fetchStockPrices, fetchCryptoPrices } from './marketPrices';
-import type { Transaction, TransactionInput, Holding, PortfolioSummary } from './types';
+import type { Transaction, TransactionInput, PortfolioSummary } from './types';
 import PortfolioSummaryCards from './PortfolioSummary';
+import PortfolioChart from './PortfolioChart';
 import HoldingList from './HoldingList';
 import AddTransactionModal from './AddTransactionModal';
 import TransactionDetailModal from './TransactionDetailModal';
@@ -32,11 +33,6 @@ export default function PortfolioPage() {
     () => [...stockStore.holdings, ...cryptoStore.holdings],
     [stockStore.holdings, cryptoStore.holdings],
   );
-
-  // Filter by type
-  const filteredTransactions = filter === 'all'
-    ? allTransactions
-    : allTransactions.filter((t) => t.asset_type === filter);
 
   const filteredHoldings = filter === 'all'
     ? allHoldings
@@ -172,7 +168,7 @@ export default function PortfolioPage() {
           </p>
           {error && (
             <p className={styles.errorBanner}>
-              ⚠️ {error}
+              {error}
               <button className={styles.retryLink} onClick={refresh}>重试</button>
             </p>
           )}
@@ -187,7 +183,7 @@ export default function PortfolioPage() {
                 className={`${styles.filterBtn} ${filter === f ? styles.filterActive : ''}`}
                 onClick={() => setFilter(f)}
               >
-                {f === 'all' ? '全部' : f === 'stock' ? '🇺🇸 美股' : '🪙 虚拟货币'}
+                {f === 'all' ? '全部' : f === 'stock' ? '美股' : '虚拟货币'}
               </button>
             ))}
           </div>
@@ -203,8 +199,16 @@ export default function PortfolioPage() {
           <PortfolioSummaryCards summary={summary} isLoading={isLoading} />
         </div>
 
+        {/* Chart */}
+        <div className={showTransition ? styles.fadeIn : ''} style={{ animationDelay: '0.08s' }}>
+          <PortfolioChart
+            transactions={allTransactions}
+            marketPrices={marketPrices}
+          />
+        </div>
+
         {/* Holdings */}
-        <div className={showTransition ? styles.fadeIn : ''} style={{ animationDelay: '0.1s' }}>
+        <div className={showTransition ? styles.fadeIn : ''} style={{ animationDelay: '0.12s' }}>
           <HoldingList
             holdings={holdingsWithPrices}
             isLoading={isLoading}

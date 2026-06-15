@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { getSupabase } from '@/lib/supabase';
-import type { Transaction, TransactionInput, Holding, PortfolioSummary, PortfolioState } from './types';
+import type { Transaction, TransactionInput, Holding, PortfolioState } from './types';
 
 // ── Helpers ──
 
@@ -77,50 +77,12 @@ function computeHoldings(transactions: Transaction[]): Holding[] {
   });
 }
 
-function computeSummary(holdings: Holding[]): PortfolioSummary {
-  let totalValue = 0;
-  let totalCost = 0;
-  let realizedPnl = 0;
-  let unrealizedPnl: number | null = null;
-  let holdingCount = 0;
-
-  for (const h of holdings) {
-    realizedPnl += h.realizedPnl;
-    if (h.totalQuantity > 0) {
-      holdingCount++;
-      totalCost += h.totalCost;
-      if (h.currentValue != null) {
-        totalValue += h.currentValue;
-      } else {
-        totalValue += h.totalCost;
-      }
-      if (h.unrealizedPnl != null) {
-        unrealizedPnl = (unrealizedPnl ?? 0) + h.unrealizedPnl;
-      }
-    }
-  }
-
-  const totalPnl = realizedPnl + (unrealizedPnl ?? 0);
-  const totalPnlPercent = totalCost > 0 ? (totalPnl / totalCost) * 100 : 0;
-
-  return {
-    totalValue,
-    totalCost,
-    totalPnl,
-    totalPnlPercent,
-    holdingCount,
-    realizedPnl,
-    unrealizedPnl,
-  };
-}
-
 // ── Hook ──
 
 export function usePortfolioStore(assetType: 'stock' | 'crypto') {
   const [state, setState] = useState<PortfolioState>({
     transactions: [],
     holdings: [],
-    summary: null,
     isLoading: true,
     error: null,
   });
@@ -146,10 +108,9 @@ export function usePortfolioStore(assetType: 'stock' | 'crypto') {
 
       const transactions = (data ?? []) as Transaction[];
       const holdings = computeHoldings(transactions);
-      const summary = computeSummary(holdings);
 
       if (!cancelledRef.current) {
-        setState({ transactions, holdings, summary, isLoading: false, error: null });
+        setState({ transactions, holdings, isLoading: false, error: null });
       }
     } catch (err) {
       if (!cancelledRef.current) {

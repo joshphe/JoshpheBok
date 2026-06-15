@@ -94,7 +94,6 @@ function HoldingCard({
     >
       <div className={styles.holdingHeader}>
         <div className={styles.holdingSymbol}>
-          <span className={styles.holdingIcon}>{isClosed ? '📭' : '📌'}</span>
           <span className={styles.holdingName}>{h.symbol}</span>
           {h.name && h.name !== h.symbol && (
             <span className={styles.holdingFullName}>{h.name}</span>

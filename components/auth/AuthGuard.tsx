@@ -106,11 +106,9 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         {mode === 'idle' ? (
           <div className={styles.actions}>
             <button className={styles.guestBtn} onClick={enterAsGuest}>
-              <span className={styles.btnIcon}>👁️</span>
               游客访问
             </button>
             <button className={styles.bloggerBtn} onClick={() => setMode('blogger')}>
-              <span className={styles.btnIcon}>🔑</span>
               博主登录
             </button>
           </div>

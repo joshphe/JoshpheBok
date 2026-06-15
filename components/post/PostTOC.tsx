@@ -53,10 +53,7 @@ export default function PostTOC({ headings }: PostTOCProps) {
     <>
       {/* Desktop TOC */}
       <nav className={styles.desktop} aria-label="文章目录">
-        <h4 className={styles.title}>
-          <span className={styles.titleIcon}>☰</span>
-          目录导览
-        </h4>
+        <h4 className={styles.title}>目录导览</h4>
         <ul className={styles.list}>
           {headings.map((h) => (
             <li
