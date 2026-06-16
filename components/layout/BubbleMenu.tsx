@@ -23,7 +23,7 @@ export default function BubbleMenu() {
   return (
     <nav className={`${styles.nav} ${isHome ? styles.onHero : ''}`}>
       {/* Logo */}
-      <Link href="/" className={styles.logo}>
+      <Link href="/" className={styles.logo} prefetch={false}>
         <span className={styles.logoText}>{SITE.title}</span>
       </Link>
 
@@ -33,6 +33,7 @@ export default function BubbleMenu() {
           <Link
             key={item.href}
             href={item.href}
+            prefetch={false}
             className={`${styles.link} ${pathname === item.href ? styles.linkActive : ''}`}
           >
             {item.label}
