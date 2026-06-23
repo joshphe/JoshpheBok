@@ -10,7 +10,7 @@ const OUT_DIR = join(ROOT, 'public');
 
 const SITE = {
   title: '暮光之城',
-  url: 'https://joshphe.top',
+  url: 'https://joshphe.xyz',
   description: '一个专注数据库技术与后端开发的个人博客',
   author: 'JinPeng Wang',
 };

@@ -28,16 +28,6 @@ export function formatDateCN(date: string | Date): string {
   return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
 }
 
-/** Simple string hash (for deterministic feature image selection) */
-export function hashCode(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) - hash) + str.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-}
-
 /** Format a number as currency string */
 export function formatCurrency(value: number): string {
   if (value >= 1_000_000) {

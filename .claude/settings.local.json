@@ -41,7 +41,10 @@
       "Bash(npx tsc *)",
       "Bash(kill %1)",
       "Bash(kill 4399)",
-      "Bash(lsof -ti:3000)"
+      "Bash(lsof -ti:3000)",
+      "Bash(test -f /Users/0xjasper/Documents/MyBok/Dockerfile -o -f /Users/0xjasper/Documents/MyBok/docker-compose.yml -o -f /Users/0xjasper/Documents/MyBok/.dockerignore)",
+      "Bash(node scripts/generate-rss.mjs)",
+      "Bash(node scripts/generate-sitemap.mjs)"
     ]
   }
 }

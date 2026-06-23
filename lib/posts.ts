@@ -106,34 +106,6 @@ export async function getPost(slug: string): Promise<Post | undefined> {
   return _postsBySlug?.get(slug);
 }
 
-export async function getTags(): Promise<{ name: string; count: number }[]> {
-  const posts = await loadAllPosts();
-  const map = new Map<string, number>();
-  posts.forEach((p) => p.tags.forEach((t) => map.set(t, (map.get(t) ?? 0) + 1)));
-  return Array.from(map.entries())
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count);
-}
-
-export async function getCategories(): Promise<{ name: string; count: number }[]> {
-  const posts = await loadAllPosts();
-  const map = new Map<string, number>();
-  posts.forEach((p) => p.categories.forEach((c) => map.set(c, (map.get(c) ?? 0) + 1)));
-  return Array.from(map.entries())
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count);
-}
-
-export async function getPostsByTag(tag: string): Promise<Post[]> {
-  const posts = await loadAllPosts();
-  return posts.filter((p) => p.tags.includes(tag));
-}
-
-export async function getPostsByCategory(category: string): Promise<Post[]> {
-  const posts = await loadAllPosts();
-  return posts.filter((p) => p.categories.includes(category));
-}
-
 export async function getAllSlugs(): Promise<string[]> {
   const posts = await loadAllPosts();
   return posts.map((p) => p.slug);

@@ -4,7 +4,7 @@ export const SITE = {
   description: '一个专注数据库技术与后端开发的个人博客',
   keywords: ['数据库', '后端开发', 'PostgreSQL', 'MySQL', 'Redis', '技术博客'],
   author: 'JinPeng Wang',
-  url: 'https://joshphe.top',
+  url: 'https://joshphe.xyz',
   github: 'https://github.com/joshphe',
   email: '784118046@qq.com',
   since: 2021,
@@ -24,5 +24,3 @@ export const PROFILE = {
   intro: 'If you wish to succeed, you should use persistence as your good friend, experience as your reference, prudence as your brother and hope as your sentry.',
 } as const;
 
-/** Routes that require blogger role */
-export const RESTRICTED_ROUTES = ['/portfolio'] as const;

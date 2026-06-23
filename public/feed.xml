@@ -2,65 +2,65 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>暮光之城</title>
-    <link>https://joshphe.top</link>
+    <link>https://joshphe.xyz</link>
     <description>一个专注数据库技术与后端开发的个人博客</description>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 16 Jun 2026 02:39:45 GMT</lastBuildDate>
-    <atom:link href="https://joshphe.top/feed.xml" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>Tue, 23 Jun 2026 06:26:23 GMT</lastBuildDate>
+    <atom:link href="https://joshphe.xyz/feed.xml" rel="self" type="application/rss+xml"/>
     
     <item>
       <title>TiDB 实现 Mysql 分库分表合并数据同步</title>
-      <link>https://joshphe.top/posts/tidb-mysql-shard-merge</link>
-      <guid>https://joshphe.top/posts/tidb-mysql-shard-merge</guid>
+      <link>https://joshphe.xyz/posts/tidb-mysql-shard-merge</link>
+      <guid>https://joshphe.xyz/posts/tidb-mysql-shard-merge</guid>
       <pubDate>Mon, 05 Dec 2022 19:25:00 GMT</pubDate>
       <description>TiDB 实现 Mysql 分库分表合并数据同步</description>
     </item>
     <item>
       <title>MySQL问题记录汇总</title>
-      <link>https://joshphe.top/posts/mysql-issues</link>
-      <guid>https://joshphe.top/posts/mysql-issues</guid>
+      <link>https://joshphe.xyz/posts/mysql-issues</link>
+      <guid>https://joshphe.xyz/posts/mysql-issues</guid>
       <pubDate>Fri, 24 Sep 2021 10:06:00 GMT</pubDate>
       <description>Mysql问题记录汇总</description>
     </item>
     <item>
       <title>人口信息生僻字合法性校验</title>
-      <link>https://joshphe.top/posts/population-rare-characters</link>
-      <guid>https://joshphe.top/posts/population-rare-characters</guid>
+      <link>https://joshphe.xyz/posts/population-rare-characters</link>
+      <guid>https://joshphe.xyz/posts/population-rare-characters</guid>
       <pubDate>Tue, 14 Sep 2021 09:25:00 GMT</pubDate>
       <description>人口信息库汉字合法性校验（GB18030）</description>
     </item>
     <item>
       <title>Left join未使用索引</title>
-      <link>https://joshphe.top/posts/left-join-index-issue</link>
-      <guid>https://joshphe.top/posts/left-join-index-issue</guid>
+      <link>https://joshphe.xyz/posts/left-join-index-issue</link>
+      <guid>https://joshphe.xyz/posts/left-join-index-issue</guid>
       <pubDate>Thu, 13 May 2021 19:25:00 GMT</pubDate>
       <description>Mysql数据库字符集差异导致索引失效</description>
     </item>
     <item>
       <title>Log4j 1.x版本高并发引发BLOCKED死锁</title>
-      <link>https://joshphe.top/posts/log4j-high-concurrency-deadlock</link>
-      <guid>https://joshphe.top/posts/log4j-high-concurrency-deadlock</guid>
+      <link>https://joshphe.xyz/posts/log4j-high-concurrency-deadlock</link>
+      <guid>https://joshphe.xyz/posts/log4j-high-concurrency-deadlock</guid>
       <pubDate>Thu, 13 May 2021 19:25:00 GMT</pubDate>
       <description>Log4j 1.x版本高并发BLOCKED死锁</description>
     </item>
     <item>
       <title>MySQL数据库设计开发规范</title>
-      <link>https://joshphe.top/posts/mysql-db-design-spec</link>
-      <guid>https://joshphe.top/posts/mysql-db-design-spec</guid>
+      <link>https://joshphe.xyz/posts/mysql-db-design-spec</link>
+      <guid>https://joshphe.xyz/posts/mysql-db-design-spec</guid>
       <pubDate>Fri, 22 Jan 2021 20:25:00 GMT</pubDate>
       <description>Mysql数据库设计约束</description>
     </item>
     <item>
       <title>Oracle数据库日常操作</title>
-      <link>https://joshphe.top/posts/oracle-daily-ops</link>
-      <guid>https://joshphe.top/posts/oracle-daily-ops</guid>
+      <link>https://joshphe.xyz/posts/oracle-daily-ops</link>
+      <guid>https://joshphe.xyz/posts/oracle-daily-ops</guid>
       <pubDate>Fri, 22 Jan 2021 19:25:00 GMT</pubDate>
       <description>记录自己Oracle数据库日常操作</description>
     </item>
     <item>
       <title>Oracle数据库设计开发规范</title>
-      <link>https://joshphe.top/posts/oracle-db-design-spec</link>
-      <guid>https://joshphe.top/posts/oracle-db-design-spec</guid>
+      <link>https://joshphe.xyz/posts/oracle-db-design-spec</link>
+      <guid>https://joshphe.xyz/posts/oracle-db-design-spec</guid>
       <pubDate>Fri, 22 Jan 2021 19:25:00 GMT</pubDate>
       <description>Oracle数据库设计约束</description>
     </item>

@@ -1,85 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://joshphe.top/</loc>
+    <loc>https://joshphe.xyz/</loc>
     
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/posts</loc>
+    <loc>https://joshphe.xyz/posts</loc>
     
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/tags</loc>
+    <loc>https://joshphe.xyz/tags</loc>
     
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/archives</loc>
+    <loc>https://joshphe.xyz/archives</loc>
     
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/about</loc>
+    <loc>https://joshphe.xyz/about</loc>
     
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/search</loc>
+    <loc>https://joshphe.xyz/search</loc>
     
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/posts/left-join-index-issue</loc>
+    <loc>https://joshphe.xyz/posts/left-join-index-issue</loc>
     <lastmod>2021-05-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/posts/log4j-high-concurrency-deadlock</loc>
+    <loc>https://joshphe.xyz/posts/log4j-high-concurrency-deadlock</loc>
     <lastmod>2021-05-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/posts/mysql-db-design-spec</loc>
+    <loc>https://joshphe.xyz/posts/mysql-db-design-spec</loc>
     <lastmod>2021-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/posts/mysql-issues</loc>
+    <loc>https://joshphe.xyz/posts/mysql-issues</loc>
     <lastmod>2021-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/posts/oracle-daily-ops</loc>
+    <loc>https://joshphe.xyz/posts/oracle-daily-ops</loc>
     <lastmod>2021-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/posts/tidb-mysql-shard-merge</loc>
+    <loc>https://joshphe.xyz/posts/tidb-mysql-shard-merge</loc>
     <lastmod>2022-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/posts/oracle-db-design-spec</loc>
+    <loc>https://joshphe.xyz/posts/oracle-db-design-spec</loc>
     <lastmod>2021-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://joshphe.top/posts/population-rare-characters</loc>
+    <loc>https://joshphe.xyz/posts/population-rare-characters</loc>
     <lastmod>2021-09-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

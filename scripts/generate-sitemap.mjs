@@ -8,7 +8,7 @@ const ROOT = join(__dirname, '..');
 const POSTS_DIR = join(ROOT, 'content/posts');
 const OUT_DIR = join(ROOT, 'public');
 
-const SITE_URL = 'https://joshphe.top';
+const SITE_URL = 'https://joshphe.xyz';
 
 function slugFromFilename(filename) {
   return filename.replace(/\.md$/, '');

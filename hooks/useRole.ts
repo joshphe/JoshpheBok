@@ -14,10 +14,6 @@ function readRole(): Role {
   return 'loading';
 }
 
-export function getRole(): Role {
-  return readRole();
-}
-
 export function useRole(): Role {
   const [role, setRole] = useState<Role>(readRole);
 

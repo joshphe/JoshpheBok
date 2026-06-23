@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://joshphe.top/sitemap.xml
+Sitemap: https://joshphe.xyz/sitemap.xml
