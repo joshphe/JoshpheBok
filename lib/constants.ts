@@ -13,7 +13,7 @@ export const SITE = {
 
 export const NAV = [
   { label: '首页', href: '/', icon: 'home' },
-  { label: '目录', href: '/tags', icon: 'list' },
+  { label: '文章', href: '/tags', icon: 'list' },
   { label: '组合', href: '/portfolio', icon: 'chart' },
   { label: '关于', href: '/about', icon: 'user' },
 ] as const;

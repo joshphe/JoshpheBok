@@ -61,3 +61,36 @@
   color: var(--color-text-secondary);
   padding: $spacing-2xl 0;
 }
+
+// ── "查看更多" button ──
+.moreWrap {
+  text-align: center;
+  margin-top: $spacing-xl;
+  animation: fadeInUp 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: 0.48s;
+}
+
+.moreBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-sm $spacing-lg;
+  font-family: var(--font-sans);
+  font-size: $font-size-base;
+  font-weight: 500;
+  color: var(--color-primary);
+  background: transparent;
+  border: 1.5px solid var(--color-primary-light);
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: all $transition-natural;
+  text-decoration: none;
+
+  &:hover {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: $shadow-warm;
+  }
+}

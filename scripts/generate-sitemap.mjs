@@ -19,9 +19,7 @@ const staticPages = [
   { path: '/', priority: '1.0', changefreq: 'daily' },
   { path: '/posts', priority: '0.9', changefreq: 'daily' },
   { path: '/tags', priority: '0.8', changefreq: 'weekly' },
-  { path: '/archives', priority: '0.6', changefreq: 'weekly' },
   { path: '/about', priority: '0.5', changefreq: 'monthly' },
-  { path: '/search', priority: '0.3', changefreq: 'monthly' },
 ];
 
 // Collect post pages

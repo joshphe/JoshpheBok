@@ -1,5 +1,6 @@
 import { readdirSync } from 'fs';
 import { join } from 'path';
+import Link from 'next/link';
 import { SITE } from '@/lib/constants';
 import { getPosts } from '@/lib/posts';
 import { shuffleArray } from '@/lib/utils';
@@ -39,6 +40,11 @@ export default async function HomePage() {
         <div className="container">
           <h2 className={styles.homeHeading}>推荐阅读</h2>
           <PostGrid posts={picks} />
+          <div className={styles.moreWrap}>
+            <Link href="/posts" className={styles.moreBtn}>
+              查看更多 →
+            </Link>
+          </div>
         </div>
       </section>
     </ScrollSnapper>
