@@ -5,7 +5,6 @@ import { SITE } from '@/lib/constants';
 import PostDetail from '@/components/post/PostDetail';
 import PostTOC from '@/components/post/PostTOC';
 import PostNav from '@/components/post/PostNav';
-import PageGuard from '@/components/auth/PageGuard';
 import styles from './page.module.scss';
 
 interface Props {
@@ -57,16 +56,14 @@ export default async function PostPage({ params }: Props) {
   const headings = extractHeadings(post.content);
 
   return (
-    <PageGuard>
-      <div className={styles.page}>
-        <div className={styles.content}>
-          <PostDetail post={post} />
-          <PostNav current={post} />
-        </div>
-        <aside className={styles.sidebar}>
-          <PostTOC headings={headings} />
-        </aside>
+    <div className={styles.page}>
+      <div className={styles.content}>
+        <PostDetail post={post} />
+        <PostNav current={post} />
       </div>
-    </PageGuard>
+      <aside className={styles.sidebar}>
+        <PostTOC headings={headings} />
+      </aside>
+    </div>
   );
 }

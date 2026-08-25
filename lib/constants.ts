@@ -13,8 +13,8 @@ export const SITE = {
 
 export const NAV = [
   { label: '首页', href: '/', icon: 'home' },
-  { label: '文章', href: '/tags', icon: 'list' },
-  { label: '组合', href: '/portfolio', icon: 'chart' },
+  { label: '文章', href: '/posts', icon: 'list' },
+  { label: '标签', href: '/tags', icon: 'tag' },
   { label: '关于', href: '/about', icon: 'user' },
 ] as const;
 
@@ -23,4 +23,3 @@ export const PROFILE = {
   career: 'Software Engineer',
   intro: 'If you wish to succeed, you should use persistence as your good friend, experience as your reference, prudence as your brother and hope as your sentry.',
 } as const;
-

@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import { SITE } from '@/lib/constants';
-import AuthGuard from '@/components/auth/AuthGuard';
 import BubbleMenu from '@/components/layout/BubbleMenu';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import SlidingFooter from '@/components/layout/SlidingFooter';
@@ -54,17 +53,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <AuthGuard>
-          <BubbleMenu />
-          <div style={{ position: 'fixed', top: 20, right: 22, zIndex: 1001 }}>
-            <ThemeToggle variant="subtle" />
-          </div>
-          <main>{children}</main>
-          <SlidingFooter />
-          <BackToTop />
-          <SpeedInsights />
-          <Analytics />
-        </AuthGuard>
+        <BubbleMenu />
+        <div style={{ position: 'fixed', top: 20, right: 22, zIndex: 1001 }}>
+          <ThemeToggle variant="subtle" />
+        </div>
+        <main>{children}</main>
+        <SlidingFooter />
+        <BackToTop />
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
