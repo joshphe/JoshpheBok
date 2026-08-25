@@ -3,7 +3,6 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import { SITE } from '@/lib/constants';
 import BubbleMenu from '@/components/layout/BubbleMenu';
-import ThemeToggle from '@/components/ui/ThemeToggle';
 import SlidingFooter from '@/components/layout/SlidingFooter';
 import BackToTop from '@/components/ui/BackToTop';
 import '@/styles/globals.scss';
@@ -42,7 +41,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="zh-CN" data-theme="dark" suppressHydrationWarning>
+    <html lang="zh-CN">
       <head>
         <link rel="icon" href="/favicon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -54,9 +53,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <BubbleMenu />
-        <div style={{ position: 'fixed', top: 20, right: 22, zIndex: 1001 }}>
-          <ThemeToggle variant="subtle" />
-        </div>
         <main>{children}</main>
         <SlidingFooter />
         <BackToTop />

@@ -37,7 +37,10 @@
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: $spacing-lg;
+  gap: $spacing-md;
+  width: 100%;
+  max-width: 1080px;
+  margin-inline: auto;
 
   // Staggered fade-in for post cards
   > * {

@@ -74,9 +74,6 @@
   -webkit-backdrop-filter: blur($blur) saturate(1.2);
   border: 1px solid rgba(255, 255, 255, $border-opacity);
 
-  [data-theme='dark'] & {
-    background: rgba(36, 48, 36, $bg-opacity + 0.06);
-  }
 }
 
 // ── Status Dot ──

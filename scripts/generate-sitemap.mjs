@@ -17,9 +17,9 @@ function slugFromFilename(filename) {
 // Static pages
 const staticPages = [
   { path: '/', priority: '1.0', changefreq: 'daily' },
+  { path: '/dashboard', priority: '0.9', changefreq: 'weekly' },
   { path: '/posts', priority: '0.9', changefreq: 'daily' },
   { path: '/tags', priority: '0.8', changefreq: 'weekly' },
-  { path: '/about', priority: '0.5', changefreq: 'monthly' },
 ];
 
 // Collect post pages
@@ -54,8 +54,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((u) => `  <url>
     <loc>${u.loc}</loc>
-    ${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}
-    <changefreq>${u.changefreq}</changefreq>
+${u.lastmod ? `    <lastmod>${u.lastmod}</lastmod>\n` : ''}    <changefreq>${u.changefreq}</changefreq>
     <priority>${u.priority}</priority>
   </url>`).join('\n')}
 </urlset>`;

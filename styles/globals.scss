@@ -29,26 +29,6 @@
   --ticker-text-dim: #{$color-text-secondary};
 }
 
-[data-theme='dark'] {
-  --color-primary: #{$color-primary-light};
-  --color-primary-dark: #{$color-primary};
-  --color-bg: #{$dark-bg};
-  --color-surface: #{$dark-surface};
-  --color-text: #{$dark-text};
-  --color-text-secondary: #{$dark-text-secondary};
-  --color-border: #{$dark-border};
-  --color-link: #{$color-primary-light};
-  --color-link-hover: #{$color-accent-warm};
-  --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.2);
-  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.3);
-  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.4);
-  // Ticker (dark theme: light text on dark bg)
-  --ticker-bg: rgba(255, 255, 255, 0.08);
-  --ticker-border: rgba(255, 255, 255, 0.12);
-  --ticker-text: rgba(255, 255, 255, 0.9);
-  --ticker-text-dim: rgba(255, 255, 255, 0.55);
-}
-
 *,
 *::before,
 *::after {

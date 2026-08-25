@@ -8,7 +8,7 @@ import PostNav from '@/components/post/PostNav';
 import styles from './page.module.scss';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -17,7 +17,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await getPost(params.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
   if (!post) return { title: '文章未找到' };
   return {
     title: post.title,
@@ -50,7 +51,8 @@ function extractHeadings(html: string) {
 }
 
 export default async function PostPage({ params }: Props) {
-  const post = await getPost(params.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
   if (!post) notFound();
 
   const headings = extractHeadings(post.content);

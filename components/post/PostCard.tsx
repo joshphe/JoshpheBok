@@ -13,8 +13,8 @@ export default function PostCard({ post }: { post: Post }) {
       glowColor="120 35 35"
       backgroundColor="var(--color-surface, #FFFDF9)"
       borderRadius={14}
-      glowRadius={30}
-      glowIntensity={0.7}
+      glowRadius={22}
+      glowIntensity={0.55}
       coneSpread={25}
       colors={['#4A7C59', '#8FBC8F', '#D4A76A']}
       fillOpacity={0.3}
@@ -47,15 +47,6 @@ export default function PostCard({ post }: { post: Post }) {
           </div>
         </div>
 
-        {post.tags.length > 0 && (
-          <div className={styles.tags}>
-            {post.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className={styles.tag}>
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
       </article>
     </BorderGlow>
   );

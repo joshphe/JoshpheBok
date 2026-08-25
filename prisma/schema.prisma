@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AirdropProject {
+  id                Int       @id @default(autoincrement())
+  name              String
+  slug              String    @unique
+  walletType        String    @default("")
+  walletMasked      String    @default("")
+  status            String
+  interactionType   String    @default("")
+  participatedAt    DateTime?
+  costUsd           Decimal   @default(0) @db.Decimal(18, 8)
+  rewardToken       String    @default("")
+  rewardQuantity    Decimal   @default(0) @db.Decimal(24, 8)
+  rewardPriceUsd    Decimal   @default(0) @db.Decimal(18, 8)
+  realizedIncomeUsd Decimal   @default(0) @db.Decimal(18, 8)
+  rewardValueUsd    Decimal   @default(0) @db.Decimal(18, 8)
+  netValueUsd       Decimal   @default(0) @db.Decimal(18, 8)
+  review            String    @default("")
+  projectUrl        String    @default("")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([status])
+  @@index([participatedAt])
+}
+
+model DefiProject {
+  id             Int       @id @default(autoincrement())
+  sourceKey      String    @unique
+  platform       String
+  name           String
+  productType    String
+  startedAt      DateTime?
+  endedAt        DateTime?
+  principalUsd   Decimal   @default(0) @db.Decimal(18, 8)
+  feeUsd         Decimal   @default(0) @db.Decimal(18, 8)
+  rewardUsd      Decimal   @default(0) @db.Decimal(18, 8)
+  netIncomeUsd   Decimal   @default(0) @db.Decimal(18, 8)
+  annualizedRate Decimal?  @db.Decimal(12, 8)
+  status         String
+  durationDays   Int?
+  review         String    @default("")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([platform])
+  @@index([status])
+  @@index([startedAt])
+}

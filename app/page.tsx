@@ -5,7 +5,6 @@ import { SITE } from '@/lib/constants';
 import { getPosts } from '@/lib/posts';
 import { shuffleArray } from '@/lib/utils';
 import BannerCover from '@/components/widgets/BannerCover';
-import WealthSection from '@/components/widgets/WealthSection';
 import PostGrid from '@/components/post/PostGrid';
 import ScrollSnapper from '@/components/layout/ScrollSnapper';
 import styles from '@/styles/components/PostGrid.module.scss';
@@ -35,7 +34,6 @@ export default async function HomePage() {
       <div style={{ position: 'sticky', top: 0, height: '100vh', zIndex: 1, overflow: 'hidden' }} data-hero>
         <BannerCover images={bgImages} />
       </div>
-      <WealthSection />
       <section className={styles.homePosts}>
         <div className="container">
           <h2 className={styles.homeHeading}>推荐阅读</h2>

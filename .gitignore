@@ -5,4 +5,7 @@ node_modules/
 out/
 .velite/
 .env.local
+.env
 .env*.local
+outputs/
+data/yield-data.json
