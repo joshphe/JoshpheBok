@@ -55,7 +55,10 @@ try {
   await prisma.$executeRawUnsafe('CREATE INDEX IF NOT EXISTS "DefiProject_status_idx" ON "DefiProject"("status")');
   await prisma.$executeRawUnsafe('CREATE INDEX IF NOT EXISTS "DefiProject_startedAt_idx" ON "DefiProject"("startedAt")');
 
-  console.log('Dashboard tables are ready. Existing tables were preserved.');
+  await prisma.$executeRawUnsafe(`UPDATE "AirdropProject" SET "status" = '参与中' WHERE "status" = '持续关注'`);
+  await prisma.$executeRawUnsafe(`UPDATE "DefiProject" SET "status" = '已退出' WHERE "status" <> '进行中'`);
+
+  console.log('Dashboard tables and project status dictionaries are ready. Existing tables were preserved.');
 } finally {
   await prisma.$disconnect();
 }
