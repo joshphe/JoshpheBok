@@ -1,10 +1,11 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import type { DashboardData, DashboardProject } from '@/lib/dashboard';
 import styles from '@/styles/components/Dashboard.module.scss';
 
 type ProjectType = 'airdrop' | 'defi';
+const DEFI_BASE_CAPITAL_USD = 10_000;
 
 function formatUsd(value: number) {
   return new Intl.NumberFormat('en-US', {
@@ -15,6 +16,11 @@ function formatUsd(value: number) {
 function formatQuantity(value: number) {
   if (value === 0) return '—';
   return new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 }).format(value);
+}
+
+function formatReward(project: DashboardProject) {
+  if (!project.rewardQuantity) return project.rewardToken === '—' ? '—' : project.rewardToken;
+  return `${formatQuantity(project.rewardQuantity)} ${project.rewardToken === '—' ? '' : project.rewardToken}`.trim();
 }
 
 function formatDate(value: string | null) {
@@ -28,7 +34,7 @@ function formatApr(value: number | null) {
 
 function statusTone(status: string) {
   if (status.includes('变现') || status.includes('退出')) return styles.statusDone;
-  if (status.includes('奖励')) return styles.statusRewarded;
+  if (status === '已获奖励') return styles.statusRewarded;
   return styles.statusTracking;
 }
 
@@ -42,8 +48,7 @@ function AirdropRow({ project }: { project: DashboardProject }) {
       <td><span className={`${styles.status} ${statusTone(project.status)}`}>{project.status}</span></td>
       <td className={styles.numberCell}>{formatDate(project.date)}</td>
       <td className={styles.numberCell}>{formatUsd(project.costUsd)}</td>
-      <td>{project.rewardToken}</td>
-      <td className={styles.numberCell}>{formatQuantity(project.rewardQuantity)}</td>
+      <td className={styles.numberCell}>{formatReward(project)}</td>
       <td className={`${styles.numberCell} ${project.realizedIncomeUsd > 0 ? styles.positive : ''}`}>{formatUsd(project.realizedIncomeUsd)}</td>
       <td><span className={styles.review}>{project.review}</span></td>
     </tr>
@@ -54,9 +59,9 @@ function DefiRow({ project }: { project: DashboardProject }) {
   return (
     <tr>
       <td><strong className={styles.projectName}>{project.name}</strong><span className={styles.projectSubtitle}>{project.subtitle}</span></td>
-      <td><span className={`${styles.status} ${statusTone(project.status)}`}>{project.status}</span></td>
       <td className={styles.numberCell}>{formatDate(project.date)}</td>
       <td className={styles.numberCell}>{formatDate(project.endDate)}</td>
+      <td><span className={`${styles.status} ${statusTone(project.status)}`}>{project.status}</span></td>
       <td className={styles.numberCell}>{formatUsd(project.costUsd)}</td>
       <td className={`${styles.numberCell} ${project.realizedIncomeUsd > 0 ? styles.positive : ''}`}>{formatUsd(project.realizedIncomeUsd)}</td>
       <td className={`${styles.numberCell} ${project.annualizedApr && project.annualizedApr > 0 ? styles.positive : ''}`}>{formatApr(project.annualizedApr)}</td>
@@ -68,26 +73,20 @@ function DefiRow({ project }: { project: DashboardProject }) {
 export default function DashboardView({ data }: { data: DashboardData }) {
   const pageSize = 10;
   const [activeType, setActiveType] = useState<ProjectType>('airdrop');
-  const [status, setStatus] = useState('全部');
   const [page, setPage] = useState(1);
   const projects = activeType === 'airdrop' ? data.airdrops : data.defi;
-  const activeSummary = useMemo(() => ({
+  const activeSummary = {
     totalProjects: projects.length,
     totalCostUsd: projects.reduce((sum, item) => sum + item.costUsd, 0),
     realizedIncomeUsd: projects.reduce((sum, item) => sum + item.realizedIncomeUsd, 0),
-    rewardValueUsd: projects.reduce((sum, item) => sum + item.rewardValueUsd, 0),
-    averageApr: activeType === 'defi'
-      ? projects.reduce((sum, item) => sum + (item.annualizedApr ?? 0), 0) / Math.max(1, projects.filter((item) => item.annualizedApr !== null).length)
-      : null,
-  }), [activeType, projects]);
-  const statuses = useMemo(() => ['全部', ...new Set(projects.map((item) => item.status))], [projects]);
-  const visible = status === '全部' ? projects : projects.filter((item) => item.status === status);
-  const totalPages = Math.max(1, Math.ceil(visible.length / pageSize));
-  const pageItems = visible.slice((page - 1) * pageSize, page * pageSize);
+  };
+  const netIncomeUsd = activeSummary.realizedIncomeUsd - activeSummary.totalCostUsd;
+  const defiReturnRate = (activeSummary.realizedIncomeUsd / DEFI_BASE_CAPITAL_USD) * 100;
+  const totalPages = Math.max(1, Math.ceil(projects.length / pageSize));
+  const pageItems = projects.slice((page - 1) * pageSize, page * pageSize);
 
   const switchType = (type: ProjectType) => {
     setActiveType(type);
-    setStatus('全部');
     setPage(1);
   };
 
@@ -95,43 +94,36 @@ export default function DashboardView({ data }: { data: DashboardData }) {
     <div className={styles.page}>
       <div className={styles.container}>
         <header className={styles.hero}>
-          <p className={styles.kicker}>Yield Journal</p>
-          <h1>空投与 DeFi Dashboard</h1>
-          <p>记录每一次链上探索，以及时间最终给出的答案。</p>
+          <div><h1>实践记录</h1><p>简单记录参与过程、投入与已实现收益</p></div>
+          <div className={styles.typeTabs} role="group" aria-label="项目类型">
+            <button type="button" aria-pressed={activeType === 'airdrop'} className={activeType === 'airdrop' ? styles.activeTab : ''} onClick={() => switchType('airdrop')}>空投</button>
+            <button type="button" aria-pressed={activeType === 'defi'} className={activeType === 'defi' ? styles.activeTab : ''} onClick={() => switchType('defi')}>DeFi</button>
+          </div>
         </header>
 
         <section className={styles.summaryGrid} aria-label="收益总览">
-          <div className={styles.summaryCard}><span>项目总数</span><strong>{activeSummary.totalProjects}</strong><small>{activeType === 'airdrop' ? '空投项目' : 'DeFi 项目'}</small></div>
-          <div className={styles.summaryCard}><span>{activeType === 'airdrop' ? '累计成本' : '累计投入成本'}</span><strong>{formatUsd(activeSummary.totalCostUsd)}</strong><small>{activeType === 'airdrop' ? '空投 Gas 与手续费' : 'DeFi 参与本金'}</small></div>
-          <div className={styles.summaryCard}><span>已实现收益</span><strong className={styles.positive}>{formatUsd(activeSummary.realizedIncomeUsd)}</strong><small>{activeType === 'airdrop' ? '空投已变现收益' : 'DeFi 净收益'}</small></div>
-          <div className={styles.summaryCard}><span>{activeType === 'airdrop' ? '奖励总估值' : '平均年化 APR'}</span><strong>{activeType === 'airdrop' ? formatUsd(activeSummary.rewardValueUsd) : formatApr(activeSummary.averageApr)}</strong><small>{activeType === 'airdrop' ? '包含未变现空投奖励' : '按项目 APR 简单平均'}</small></div>
+          <div className={styles.summaryCard}><span>参与项目</span><strong>{activeSummary.totalProjects}</strong></div>
+          <div className={styles.summaryCard}><span>{activeType === 'airdrop' ? '累计成本' : '固定投入本金'}</span><strong>{formatUsd(activeType === 'airdrop' ? activeSummary.totalCostUsd : DEFI_BASE_CAPITAL_USD)}</strong></div>
+          <div className={styles.summaryCard}><span>已实现收益</span><strong>{formatUsd(activeSummary.realizedIncomeUsd)}</strong></div>
+          <div className={styles.summaryCard}><span>{activeType === 'airdrop' ? '净收益' : '累计收益率（非年化）'}</span><strong>{activeType === 'airdrop' ? formatUsd(netIncomeUsd) : formatApr(defiReturnRate)}</strong></div>
         </section>
 
         <section className={styles.projectsSection}>
-          <div className={styles.sectionHeader}>
-            <div className={styles.typeTabs}>
-              <button className={activeType === 'airdrop' ? styles.activeTab : ''} onClick={() => switchType('airdrop')}>空投 <span>{data.airdrops.length}</span></button>
-              <button className={activeType === 'defi' ? styles.activeTab : ''} onClick={() => switchType('defi')}>DeFi <span>{data.defi.length}</span></button>
-            </div>
-            <div className={styles.filters}>
-              {statuses.map((item) => (
-                <button key={item} className={status === item ? styles.activeFilter : ''} onClick={() => { setStatus(item); setPage(1); }}>{item}</button>
-              ))}
-            </div>
-          </div>
+          <div className={styles.sectionHeader}><h2>{activeType === 'airdrop' ? '空投项目' : 'DeFi 项目'}</h2><span>按参与{activeType === 'defi' ? '开始' : ''}时间排序</span></div>
 
           <div className={styles.tableWrap}>
             <table className={styles.projectTable}>
               <thead>
-                {activeType === 'airdrop' ? <tr><th>项目名称</th><th>项目状态</th><th>参与时间</th><th>成本</th><th>奖励币种</th><th>奖励数量</th><th>已实现收益</th><th>简短复盘</th></tr> : <tr><th>项目名称</th><th>项目状态</th><th>开始时间</th><th>结束时间</th><th>投入成本</th><th>已实现收益</th><th>年化 APR</th><th>简短复盘</th></tr>}
+                {activeType === 'airdrop' ? <tr><th>项目</th><th>状态</th><th>参与时间</th><th>成本</th><th>奖励</th><th>已实现收益</th><th>简短复盘</th></tr> : <tr><th>项目</th><th>开始时间</th><th>结束时间</th><th>状态</th><th>投入成本</th><th>已实现收益</th><th>年化 APR</th><th>简短复盘</th></tr>}
               </thead>
               <tbody>
                 {pageItems.map((project) => activeType === 'airdrop' ? <AirdropRow key={project.id} project={project} /> : <DefiRow key={project.id} project={project} />)}
+                {pageItems.length === 0 && <tr><td colSpan={activeType === 'airdrop' ? 7 : 8} className={styles.emptyState}>暂无项目记录</td></tr>}
               </tbody>
             </table>
           </div>
           <div className={styles.pagination} aria-label="分页">
-            <span>共 {visible.length} 条 · 第 {page}/{totalPages} 页</span>
+            <span>共 {projects.length} 条 · 第 {page}/{totalPages} 页</span>
             <div>
               <button disabled={page === 1} onClick={() => setPage((value) => Math.max(1, value - 1))}>上一页</button>
               {Array.from({ length: totalPages }, (_, index) => index + 1).map((item) => (
